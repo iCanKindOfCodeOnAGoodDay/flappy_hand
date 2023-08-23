@@ -424,16 +424,24 @@ class PremiumContentProvider with ChangeNotifier {
   }
   //// the  image is set here
 
+  //deathStar150.gif
+  //katyPerryRidingHorse.gif
+
+  // levelUpStatic.gif
+  // levelUpSword.gif
+  // levelUpSwordRed.gif
+
   String _pathToSelectedBackgroundImage =
       // 'horror41GlowingColorIncreasedInvertedOptimized.gif';
       // 'ravenSkullStandardSpeed.gif';
       // 'ooooSharpBlackSpace.gif';
       // 'oooBlackSpaceFrame.gif';
       // 'blocks-bg-5-6.png';
-      'blank-transparent-photo-layer.png';
-  // 'ledScreenBackground.jpg';
-  // 'horror41.JPG';
-  // 'fire.gif';
+      // 'blank-transparent-photo-layer.png';
+      // 'ledScreenBackground.jpg';
+      // 'bgBitArtCity.GIF';
+      // 'fire.gif';
+      'bgEndlessRunner.GIF';
   // 'fusion3.gif';
   // 'blackWater.gif';
   // "bgReactorCore.GIF";
@@ -666,7 +674,7 @@ class PremiumContentProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  String _pathToSelectedBeast = 'zzGhost1.gif';
+  String _pathToSelectedBeast = '2LeggedHorseTransparent1-22-23.gif';
 
   String get pathToSelectedBeast => _pathToSelectedBeast;
 
@@ -694,9 +702,10 @@ class PremiumContentProvider with ChangeNotifier {
   // String _pathToSelectedGameConsole = '12dotSquashSuperDevice.gif';
 
   String _pathToSelectedGameConsole =
-      'futuristicGameConsoleNoLogo2BLANKLOGO copy 3.png';
-  // 'futuristicGameConsoleNoLogoBLANK.png';
-  // 'dotSquashGameConsoleWhiteInvert.png';
+      // 'futuristicGameConsoleNoLogo2BLANKLOGO copy 3.png';
+      // 'futuristicGameConsoleNoLogoBLANK.png';
+      // 'dotSquashGameConsoleWhiteInvert.png';
+      'dotSquashGameConsoleGrey.png';
   // '12dotsquashConsoleExtraDarkWithRedChipDarkGrey.png';
   // '12dotSquashConsoleWhiteChip1.png';
 
