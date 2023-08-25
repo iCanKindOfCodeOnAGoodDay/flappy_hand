@@ -1049,11 +1049,13 @@ class GameStatusProvider with ChangeNotifier {
   bool get shouldDisplayTimeIncrease => _shouldDisplayTimeIncrease;
 
   //// rather than speeding game up, slow it down?!?!?!?
+  /// the game speeds up when you hit a crystal ball
+  /// to make game play faster, decrease game speed
 
   void fireCrystalBallTimeDecrease() {
-    _gameSpeed = _gameSpeed + 5000;
+    _gameSpeed = _gameSpeed - 10000;
     _reverseGameSpeedToDisplayForUserAsTheyProgress =
-        _reverseGameSpeedToDisplayForUserAsTheyProgress - 50;
+        _reverseGameSpeedToDisplayForUserAsTheyProgress + 100;
     // _score = _score + 50;
     _shouldDisplayTimeIncrease = true;
     fireDoublePointsEffects();
@@ -2030,7 +2032,9 @@ class GameStatusProvider with ChangeNotifier {
               ));
           contactFiveOrLess();
           contactSixOrMore();
-          handClimb();
+
+          /// used to onlly climb when firing, now lets just climb everytime the user presses the climb button, and fire hell fire seperately
+          // handClimb();
 
           // fireContact();
           notifyListeners();

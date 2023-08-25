@@ -3,6 +3,7 @@ import 'package:flappy_taco/providers/game_status_provider.dart';
 import 'package:flappy_taco/providers/premium_content_provider.dart';
 
 import 'package:flappy_taco/widgets/development_block_widget.dart';
+import 'package:flappy_taco/widgets/dynamic_barrier_coin.dart';
 
 import 'package:flappy_taco/widgets/rotating_barrier_widget.dart';
 import 'package:flappy_taco/widgets/rotating_icecream_bullet_widget.dart';
@@ -90,40 +91,46 @@ class BuildingWidget extends StatelessWidget {
                       DevelopmentBlock(color: kBlankColor),
                       DevelopmentBlock(color: kBlankColor),
                       buildingHeight >= 5
-                          ? RotatingBarrierWidget(
-                              path:
-                                  '${context.watch<PremiumContentProvider>().pathToSelectedBarrier}',
-                            )
+                          ? DynamicCoin()
+                          // RotatingBarrierWidget(
+                          //         path:
+                          //             '${context.watch<PremiumContentProvider>().pathToSelectedBarrier}',
+                          //       )
                           : kblankIcon,
                       buildingHeight >= 4
-                          ? RotatingBarrierWidget(
-                              path:
-                                  '${context.watch<PremiumContentProvider>().pathToSelectedBarrier}',
-                            )
+                          ? DynamicCoin()
+                          // RotatingBarrierWidget(
+                          //         path:
+                          //             '${context.watch<PremiumContentProvider>().pathToSelectedBarrier}',
+                          //       )
                           : kblankIcon,
                       buildingHeight >= 3
-                          ? RotatingBarrierWidget(
-                              path:
-                                  '${context.watch<PremiumContentProvider>().pathToSelectedBarrier}',
-                            )
+                          ? DynamicCoin()
+                          // RotatingBarrierWidget(
+                          //         path:
+                          //             '${context.watch<PremiumContentProvider>().pathToSelectedBarrier}',
+                          //       )
                           : kblankIcon,
                       buildingHeight >= 2
-                          ? RotatingBarrierWidget(
-                              path:
-                                  '${context.watch<PremiumContentProvider>().pathToSelectedBarrier}',
-                            )
+                          ? DynamicCoin()
+                          // RotatingBarrierWidget(
+                          //         path:
+                          //             '${context.watch<PremiumContentProvider>().pathToSelectedBarrier}',
+                          //       )
                           : kblankIcon,
                       buildingHeight >= 1
-                          ? RotatingBarrierWidget(
-                              path:
-                                  '${context.watch<PremiumContentProvider>().pathToSelectedBarrier}',
-                            )
+                          ? DynamicCoin()
+                          // RotatingBarrierWidget(
+                          //         path:
+                          //             '${context.watch<PremiumContentProvider>().pathToSelectedBarrier}',
+                          //       )
                           : kblankIcon,
                       buildingHeight >= 0
-                          ? RotatingBarrierWidget(
-                              path:
-                                  '${context.watch<PremiumContentProvider>().pathToSelectedBarrier}',
-                            )
+                          ? DynamicCoin()
+                          // RotatingBarrierWidget(
+                          //         path:
+                          //             '${context.watch<PremiumContentProvider>().pathToSelectedBarrier}',
+                          //       )
                           : kblankIcon,
                     ],
                   )
@@ -157,21 +164,13 @@ class BuildingWidget extends StatelessWidget {
                               ? Transform.scale(
                                   scaleY: -1,
                                   // angle: 180.0,
-                                  child: RotatingBarrierWidget(
-                                    path:
-                                        '${context.watch<PremiumContentProvider>().pathToSelectedBarrier}',
-                                  ),
-                                )
+                                  child: DynamicCoin())
                               : kblankIcon,
                           buildingHeight <= 11
                               ? Transform.scale(
                                   scaleY: -1,
                                   // angle: 180.0,
-                                  child: RotatingBarrierWidget(
-                                    path:
-                                        '${context.watch<PremiumContentProvider>().pathToSelectedBarrier}',
-                                  ),
-                                )
+                                  child: DynamicCoin())
                               : kblankIcon,
                           // SelectedBarrierWidget(),
                           // SelectedBarrierWidget(),
@@ -179,51 +178,31 @@ class BuildingWidget extends StatelessWidget {
                               ? Transform.scale(
                                   scaleY: -1,
                                   // angle: 180.0,
-                                  child: RotatingBarrierWidget(
-                                    path:
-                                        '${context.watch<PremiumContentProvider>().pathToSelectedBarrier}',
-                                  ),
-                                )
+                                  child: DynamicCoin())
                               : kblankIcon,
                           buildingHeight <= 9
                               ? Transform.scale(
                                   scaleY: -1,
                                   // angle: 180.0,
-                                  child: RotatingBarrierWidget(
-                                    path:
-                                        '${context.watch<PremiumContentProvider>().pathToSelectedBarrier}',
-                                  ),
-                                )
+                                  child: DynamicCoin())
                               : kblankIcon,
                           buildingHeight <= 8
                               ? Transform.scale(
                                   scaleY: -1,
                                   // angle: 180.0,
-                                  child: RotatingBarrierWidget(
-                                    path:
-                                        '${context.watch<PremiumContentProvider>().pathToSelectedBarrier}',
-                                  ),
-                                )
+                                  child: DynamicCoin())
                               : kblankIcon,
                           buildingHeight <= 7
                               ? Transform.scale(
                                   scaleY: -1,
                                   // angle: 180.0,
-                                  child: RotatingBarrierWidget(
-                                    path:
-                                        '${context.watch<PremiumContentProvider>().pathToSelectedBarrier}',
-                                  ),
-                                )
+                                  child: DynamicCoin())
                               : kblankIcon,
                           buildingHeight <= 6
                               ? Transform.scale(
                                   scaleY: -1,
                                   // angle: 180.0,
-                                  child: RotatingBarrierWidget(
-                                    path:
-                                        '${context.watch<PremiumContentProvider>().pathToSelectedBarrier}',
-                                  ),
-                                )
+                                  child: DynamicCoin())
                               : kblankIcon,
                           DevelopmentBlock(color: kBlankColor),
                           DevelopmentBlock(color: kBlankColor),

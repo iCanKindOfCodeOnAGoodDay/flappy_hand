@@ -24,8 +24,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   initState() {
     super.initState();
-    soundModel.playFlapFlapFlap(true);
     soundModel.playOtherSounds('cannonUpgrade.mp3', true);
+    soundModel.playWarningAlarm(true);
 
     // context.read<GameStatusProvider>().setBackgroundMusicToTrue();
     // soundModel.playSpookyMusic(
@@ -45,9 +45,13 @@ class _SplashScreenState extends State<SplashScreen> {
     /// if they are, play background music and
     /// send them to the game play screen
     /// TODO for now, send user straight to game play screen after a delay to display splash screen
+    Timer flappyHandSoundsTimer = Timer(Duration(seconds: 5), () {
+      soundModel.playFlapFlapFlap(true);
+    });
     Timer transitionTimer = Timer(Duration(seconds: 3), () {
       context.read<GameStatusProvider>().fireExplosion1();
       soundModel.playOtherSounds5x('customExplosion.mp3', true);
+
       // soundModel.playSpookyMusic(true);
       // soundModel.playOtherSounds5x('assets/explosionAndDebris.mp3', true);
       Navigator.of(context).pushReplacement(
@@ -74,8 +78,8 @@ class _SplashScreenState extends State<SplashScreen> {
                 child: RotatingBarrierWidget(
                   // path: 'pendantNew14Colors.gif',
                   // path: 'blackDiamondABC.gif',
-                  // path: "IMG_6724_icon.PNG",
-                  path: 'cube-white-t.png',
+                  path: "standardGrenade1-18-23GreenRed.png",
+                  // path: 'cube-white-t.png',
                 ),
               )));
           setState(() {});
@@ -120,16 +124,13 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.0),
-          image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage(
-                'images/dotSquashGameConsoleGrey.png',
-
-                // 'images/psychadelic.gif',
-
-                // 'images/dotSquashGameConsoleWhiteInvert.png',
-                // 'images/${context.watch<PremiumContentProvider>().pathToSelectedGameConsole}',
-              )),
+          // image: DecorationImage(
+          //     fit: BoxFit.cover,
+          //     image: AssetImage(
+          //       // 'images/dotSquashGameConsoleGrey.png',
+          //
+          //       'images/psychadelic.gif',
+          //     )),
         ),
         child: Center(
           child: Column(
@@ -160,6 +161,33 @@ class _SplashScreenState extends State<SplashScreen> {
               //   ),
               // ),
               // //
+
+              Expanded(
+                child: Hero(
+                  tag: 'fireBall',
+                  child: Container(
+                    // width: 100.0,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            fit: BoxFit.fitHeight,
+                            image: AssetImage('images/introv2-82523.gif'))),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              Container(
+                // height: 40.0,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: listOfIconsToBeReplacedByZombieCards,
+                ),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              //
               Expanded(
                 child: Hero(
                   tag: 'fireBall',
@@ -178,27 +206,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
               SizedBox(
                 height: 20.0,
-              ),
-              //
-              // Expanded(
-              //   child: Hero(
-              //     tag: 'fireBall',
-              //     child: Container(
-              //       // width: 100.0,
-              //       decoration: BoxDecoration(
-              //           image: DecorationImage(
-              //               fit: BoxFit.fitHeight,
-              //               image: AssetImage('images/$fireBallPathBottom'))),
-              //     ),
-              //   ),
-              // ),
-
-              Container(
-                // height: 40.0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: listOfIconsToBeReplacedByZombieCards,
-                ),
               ),
             ],
           ),

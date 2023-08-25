@@ -83,7 +83,7 @@ class GameControlsWidgets extends StatelessWidget {
                 ),
                 context.watch<GameStatusProvider>().shouldDisplayTimeIncrease ==
                         true
-                    ? FlashingTextMessageWidget(text: '50!!!')
+                    ? FlashingTextMessageWidget(text: '+100')
                     // ? Text(
                     //     '-50',
                     //     style: TextStyle(
@@ -175,6 +175,7 @@ class GameControlsWidgets extends StatelessWidget {
                     GestureDetector(
                       onTap: () {
                         context.read<GameStatusProvider>().fireHellFire();
+                        context.read<GameStatusProvider>().handClimb();
                       },
                       child: Container(
                         height: 200.0,
@@ -182,12 +183,10 @@ class GameControlsWidgets extends StatelessWidget {
 
                         // color: Colors.yellow,
                         decoration: BoxDecoration(
-                          image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: AssetImage(
-                                // 'images/componetFullGreenButtonSquareBlackThumb.png',
-                                'images/componetFullGreenButtonTriggerCombo.gif',
-                              )),
+                          image: DecorationImage(fit: BoxFit.cover, image: AssetImage(
+                              // 'images/componetFullGreenButtonSquareBlackThumb.png',
+                              // 'images/componetFullGreenButtonTriggerCombo.gif',
+                              "images/componetFullGreenButtoniXGreen2.png")),
                         ),
                       ),
                     ),

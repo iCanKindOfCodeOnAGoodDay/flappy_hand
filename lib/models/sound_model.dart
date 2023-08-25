@@ -375,6 +375,27 @@ class SoundModel {
     }
   }
 
+  void playWarningAlarm(bool hearSoundEffects) async {
+    if (hearSoundEffects == true) {
+      final audioPlayer = AudioPlayer();
+      await audioPlayer.setVolume(2.0);
+      // await audioPlayer.setLoopMode(LoopMode.one);
+
+      await audioPlayer.setAsset(
+        // 'assets/cannonUpgrade.mp3',
+        'assets/flapFlapFlapFlappyHand.mp3',
+        // 'assets/1-21-23Warning.mp3',
+      );
+      await audioPlayer.play();
+      await audioPlayer.stop();
+      // Clear the asset cache directory
+      // await AudioPlayer.clearAssetCache();
+      // Stop an
+      // d free resources
+      await audioPlayer.dispose();
+    }
+  }
+
   void playFlapFlapFlap(bool hearSoundEffects) async {
     if (hearSoundEffects == true) {
       final audioPlayer = AudioPlayer();

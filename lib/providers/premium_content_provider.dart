@@ -120,33 +120,15 @@ class PremiumContentProvider with ChangeNotifier {
     } else {
       _indexOfHandColorList = 0;
     }
-    updatePathToHandColor(handColorsEnum[_indexOfHandColorList]);
+    updatePathToHandColor(HandColors.regular);
   }
 
   void updatePathToHandColor(HandColors color) {
-    if (color == HandColors.zombieGreen14) {
-      _pathToSelectedWalkingHand = 'thingStichedWalkingXXZombieGreenPink14.gif';
-      _pathToSelectedDeadHand = 'thingRightTracedGreenRed14.gif';
-    } else if (color == HandColors.blackPink15) {
-      _pathToSelectedWalkingHand = 'thingStichedWalkingXXBlackPink15.gif';
-      _pathToSelectedDeadHand = 'thingRightTracedBlackTracedPink15.gif';
-    } else if (color == HandColors.purple11) {
-      _pathToSelectedWalkingHand = 'thingStichedWalkingXXBlackPink11.gif';
-      _pathToSelectedDeadHand = 'thingRightTracedPurpPink11.gif';
-    } else if (color == HandColors.redBlack12) {
-      _pathToSelectedWalkingHand = 'thingWalkinxxxxx12.gif';
-      _pathToSelectedDeadHand = 'thingRightTracedBlackGreenXxx12.gif';
-    } else if (color == HandColors.blackRed18) {
-      _pathToSelectedWalkingHand = 'thingStichedWalkingXXBlackRed18.gif';
-      _pathToSelectedDeadHand = 'thingRightTracedBlackRed18.gif';
-    } else if (color == HandColors.greenPinkWhite17) {
-      _pathToSelectedWalkingHand = 'thingStichedWalkingXXGreenPinkWhite17.gif';
-      _pathToSelectedDeadHand = 'thingRightTracedBlueYellow17.gif';
-    } else if (color == HandColors.regular) {
+    if (color == HandColors.regular) {
       _pathToSelectedWalkingHand = 'thingStichedWalkingXX.gif';
       _pathToSelectedDeadHand = 'thingRightTraced.png';
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   String _pathToSelectedBarrier =
@@ -491,7 +473,7 @@ class PremiumContentProvider with ChangeNotifier {
 
   int get amountOfRubiesReadyToUse => _amountOfRubiesReadyToUse;
 
-  String _pathToSelectedKnife = 'bbbbPurpleBottleInvert.gif';
+  String _pathToSelectedKnife = 'bbbbMeatCleaverInvert.gif';
 
   String get pathToSelectedKnife => _pathToSelectedKnife;
 
@@ -503,7 +485,8 @@ class PremiumContentProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  String _pathToSelectedBeast = '2LeggedHorseTransparent1-22-23.gif';
+  String _pathToSelectedBeast = 'mmZombieChargeInvertRed.gif';
+  // 'zzBaby.GIF';
 
   String get pathToSelectedBeast => _pathToSelectedBeast;
 

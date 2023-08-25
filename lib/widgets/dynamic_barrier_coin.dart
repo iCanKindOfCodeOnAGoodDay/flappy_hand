@@ -10,8 +10,8 @@ class DynamicCoin extends StatelessWidget {
                 .shouldDisplayDoublePointsEffects ==
             true
         ? Container(
-            height: 30.0,
-            width: 30.0,
+            height: 40.0,
+            width: 40.0,
             decoration: BoxDecoration(
                 image: DecorationImage(
                     fit: BoxFit.cover,
@@ -19,8 +19,8 @@ class DynamicCoin extends StatelessWidget {
           )
         : context.watch<GameStatusProvider>().score <= 500
             ? Container(
-                height: 30.0,
-                width: 30.0,
+                height: 40.0,
+                width: 40.0,
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         fit: BoxFit.cover,
@@ -28,8 +28,8 @@ class DynamicCoin extends StatelessWidget {
               )
             : context.watch<GameStatusProvider>().score <= 1500
                 ? Container(
-                    height: 30.0,
-                    width: 30.0,
+                    height: 40.0,
+                    width: 40.0,
                     decoration: BoxDecoration(
                         image: DecorationImage(
                             fit: BoxFit.cover,
@@ -37,8 +37,8 @@ class DynamicCoin extends StatelessWidget {
                   )
                 : context.watch<GameStatusProvider>().score <= 2500
                     ? Container(
-                        height: 30.0,
-                        width: 30.0,
+                        height: 40.0,
+                        width: 40.0,
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 fit: BoxFit.cover,
@@ -49,8 +49,8 @@ class DynamicCoin extends StatelessWidget {
                       )
                     : context.watch<GameStatusProvider>().score <= 5000
                         ? Container(
-                            height: 30.0,
-                            width: 30.0,
+                            height: 40.0,
+                            width: 40.0,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
                                     fit: BoxFit.cover,
@@ -59,8 +59,8 @@ class DynamicCoin extends StatelessWidget {
                           )
                         : context.watch<GameStatusProvider>().score <= 10000
                             ? Container(
-                                height: 30.0,
-                                width: 30.0,
+                                height: 40.0,
+                                width: 40.0,
                                 decoration: BoxDecoration(
                                     image: DecorationImage(
                                         fit: BoxFit.cover,
@@ -69,8 +69,8 @@ class DynamicCoin extends StatelessWidget {
                               )
                             : context.watch<GameStatusProvider>().score <= 15000
                                 ? Container(
-                                    height: 30.0,
-                                    width: 30.0,
+                                    height: 40.0,
+                                    width: 40.0,
                                     decoration: BoxDecoration(
                                         image: DecorationImage(
                                             fit: BoxFit.cover,
@@ -80,8 +80,8 @@ class DynamicCoin extends StatelessWidget {
                                 : context.watch<GameStatusProvider>().score <=
                                         25000
                                     ? Container(
-                                        height: 30.0,
-                                        width: 30.0,
+                                        height: 40.0,
+                                        width: 40.0,
                                         decoration: BoxDecoration(
                                             image: DecorationImage(
                                                 fit: BoxFit.cover,
@@ -93,8 +93,8 @@ class DynamicCoin extends StatelessWidget {
                                                 .score <=
                                             35000
                                         ? Container(
-                                            height: 30.0,
-                                            width: 30.0,
+                                            height: 40.0,
+                                            width: 40.0,
                                             decoration: BoxDecoration(
                                                 image: DecorationImage(
                                                     fit: BoxFit.cover,
@@ -106,8 +106,8 @@ class DynamicCoin extends StatelessWidget {
                                                     .score <=
                                                 45000
                                             ? Container(
-                                                height: 30.0,
-                                                width: 30.0,
+                                                height: 40.0,
+                                                width: 40.0,
                                                 decoration: BoxDecoration(
                                                     image: DecorationImage(
                                                         fit: BoxFit.cover,
@@ -120,8 +120,8 @@ class DynamicCoin extends StatelessWidget {
                                                         .score <=
                                                     75000
                                                 ? Container(
-                                                    height: 30.0,
-                                                    width: 30.0,
+                                                    height: 40.0,
+                                                    width: 40.0,
                                                     decoration: BoxDecoration(
                                                         image: DecorationImage(
                                                             fit: BoxFit.cover,
@@ -134,8 +134,8 @@ class DynamicCoin extends StatelessWidget {
                                                             .score <=
                                                         100000
                                                     ? Container(
-                                                        height: 30.0,
-                                                        width: 30.0,
+                                                        height: 40.0,
+                                                        width: 40.0,
                                                         decoration: BoxDecoration(
                                                             image: DecorationImage(
                                                                 fit: BoxFit
@@ -149,8 +149,8 @@ class DynamicCoin extends StatelessWidget {
                                                                 .score <=
                                                             250000
                                                         ? Container(
-                                                            height: 30.0,
-                                                            width: 30.0,
+                                                            height: 40.0,
+                                                            width: 40.0,
                                                             decoration: BoxDecoration(
                                                                 image: DecorationImage(
                                                                     fit: BoxFit
@@ -164,8 +164,8 @@ class DynamicCoin extends StatelessWidget {
                                                                     .score <=
                                                                 500000
                                                             ? Container(
-                                                                height: 30.0,
-                                                                width: 30.0,
+                                                                height: 40.0,
+                                                                width: 40.0,
                                                                 decoration: BoxDecoration(
                                                                     image: DecorationImage(
                                                                         fit: BoxFit
@@ -180,8 +180,8 @@ class DynamicCoin extends StatelessWidget {
                                                                     1000000
                                                                 ? Container(
                                                                     height:
-                                                                        30.0,
-                                                                    width: 30.0,
+                                                                        40.0,
+                                                                    width: 40.0,
                                                                     decoration: BoxDecoration(
                                                                         image: DecorationImage(
                                                                             fit:
@@ -194,17 +194,17 @@ class DynamicCoin extends StatelessWidget {
                                                                         1500000
                                                                     ? Container(
                                                                         height:
-                                                                            30.0,
+                                                                            40.0,
                                                                         width:
-                                                                            30.0,
+                                                                            40.0,
                                                                         decoration:
                                                                             BoxDecoration(image: DecorationImage(fit: BoxFit.cover, image: AssetImage('images/sparklingDiamondsPowerUp.gif'))),
                                                                       )
                                                                     : Container(
                                                                         height:
-                                                                            30.0,
+                                                                            40.0,
                                                                         width:
-                                                                            30.0,
+                                                                            40.0,
                                                                         decoration:
                                                                             BoxDecoration(image: DecorationImage(fit: BoxFit.cover, image: AssetImage('images/pendantNew14Colors.gif'))),
                                                                       );

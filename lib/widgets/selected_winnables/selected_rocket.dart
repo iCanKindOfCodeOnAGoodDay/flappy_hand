@@ -12,7 +12,9 @@ class SelectedRocketWidget extends StatelessWidget {
           image: DecorationImage(
               fit: BoxFit.contain,
               image: AssetImage(
-                  'images/${context.watch<PremiumContentProvider>().pathToSelectedRocket}'))),
+                "images/crystalBallXXXXX.gif",
+                // 'images/${context.watch<PremiumContentProvider>().pathToSelectedRocket}',
+              ))),
     );
   }
 }
