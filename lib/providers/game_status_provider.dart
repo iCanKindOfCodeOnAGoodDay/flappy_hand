@@ -1,21 +1,16 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flappy_taco/constants.dart';
-import 'package:flappy_taco/providers/premium_content_provider.dart';
 import 'package:flappy_taco/widgets/building_widget.dart';
 import 'package:flappy_taco/widgets/bullet_for_magazine_widget.dart';
 import 'package:flappy_taco/widgets/cannon_contact_effect_Columns.dart';
-import 'package:flappy_taco/widgets/cannon_fire.dart';
-import 'package:flappy_taco/widgets/cannon_fire_large_widget.dart';
 import 'package:flappy_taco/widgets/hell_fire_columns.dart';
 import 'package:flappy_taco/widgets/ice_cream_bullet.dart';
 import 'package:flappy_taco/widgets/selected_winnables/selected_grendade_widget.dart';
-import 'package:flappy_taco/widgets/upside_down_building_widget.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
 
 import '../models/sound_model.dart';
-import '../widgets/cannon_ammunition_widget.dart';
 import '../widgets/rotating_icecream_bullet_widget.dart';
 
 /// once the wav files were replaced by the mp3
@@ -57,23 +52,476 @@ SoundModel soundModel = SoundModel();
 class GameStatusProvider with ChangeNotifier {
   /// start the taco position at 6 near center
   int _handPosition = 5;
-
   int get handPosition => _handPosition;
-
   LastGamePlayButton _lastCommand = LastGamePlayButton.climb;
-
   LastGamePlayButton get lastCommand => _lastCommand;
 
   /// position 10 and 11 are not accessible for the hand
   /// 1, 2, 3 , 4, 5, 6, 7, 8, 9 , 10
-
   AmmoType _currentAmmunition = AmmoType.orange;
-
   AmmoType get currentAmmunition => _currentAmmunition;
-
   bool _hearSoundEffects = true;
-
   bool get hearSoundEffects => _hearSoundEffects;
+  double _opacityOfBlackGameBoy = 1.0;
+  double get opacityOfBlackGameBoy => _opacityOfBlackGameBoy;
+  bool _redGameBoyInsteadOfYellow = false;
+  bool get redGameBoyInsteadOfYellow => _redGameBoyInsteadOfYellow;
+  bool _purpleGameBoy = false;
+  bool _silverGameBoy = false;
+  bool get silverGameBoy => _silverGameBoy;
+  bool get purpleGameBoy => _purpleGameBoy;
+  bool _hearBackgroundMusic = true;
+  bool get hearBackgroundMusic => _hearBackgroundMusic;
+  bool _isClimbing = false;
+  bool get isClimbing => _isClimbing;
+  bool _showADeadHand = false;
+  bool get showADeadHand => _showADeadHand;
+  //// list of zombie hands
+  List<String> _zombieHandsForOnScreenEffectWhenUserGrabsExtraLife = [
+    // 'bbbbInvertZombieHandReach.gif',
+    // 'bbbbZombieReachBlackBlueGreen.gif',
+    'bbbbZombieReachBlackGreen.gif',
+    'bbbbZombieReachGreenGreen.gif',
+    'bbbbZombieReachPinkBlue.gif',
+    'bbbbZombieReachRedGreen.gif',
+    'bbbbZombieReachRedWhiteBlue.gif',
+  ];
+  int _iterateThroughZombieHandList = 0;
+  String _pathToZombieHandReach = 'bbbbZombieReachRedWhiteBlue.gif';
+  String get pathToZombieHandReach => _pathToZombieHandReach;
+  String _progressMessage = '';
+  String get progressMessage => _progressMessage;
+  bool _crashed = true;
+  bool get crashed => _crashed;
+  bool _userCantDie = false;
+  int _gemPosition = 0;
+  String _trackGemType = 'red';
+
+  /// set crashed = true if the user crashed into a knife without any knife defense
+  /// if the did have a knife, decrease the value
+  ///
+  ///
+  bool _shouldDisplayDoublePointsEffects = false;
+  bool get shouldDisplayDoublePointsEffects =>
+      _shouldDisplayDoublePointsEffects;
+  int _amountOfTimeUserHitDoublePoints = 1;
+  int get amountOfTimeUserHitDoublePoints => _amountOfTimeUserHitDoublePoints;
+  bool _isPaused = true;
+  bool get isPaused => _isPaused;
+  int buildingSpace = 0;
+  bool shouldMakeUpsideDownBuilding = false;
+  int _score = 0;
+  int get score => _score;
+  int _gameSpeed = 150000;
+  int _reverseGameSpeedToDisplayForUserAsTheyProgress = 100;
+  int get reverseGameSpeedToDisplayForUserAsTheyProgress =>
+      _reverseGameSpeedToDisplayForUserAsTheyProgress;
+  bool _shouldDisplayExplosion1 = false;
+  bool get shouldDisplayExplosion1 => _shouldDisplayExplosion1;
+  bool _shouldDisplayExplosion2 = false;
+  bool get shouldDisplayExplosion2 => _shouldDisplayExplosion2;
+  bool _shouldDisplayBloodSplatQuick = false;
+  bool get shouldDisplayBloodSplatQuick => _shouldDisplayBloodSplatQuick;
+  bool _shouldDisplayKnifeDefense = false;
+  bool get shouldDisplayKnifeDefense => _shouldDisplayKnifeDefense;
+  bool
+      _shouldDisplayLossALifeAndNotAGameOverAndNotAKnifeDefenseDueToBeingStabbed =
+      false;
+  bool get shouldDisplayLossALifeAndNotAGameOverAndNotAKnifeDefenseDueToBeingStabbed =>
+      _shouldDisplayLossALifeAndNotAGameOverAndNotAKnifeDefenseDueToBeingStabbed;
+  bool _shouldDisplayQuickHorror = false;
+  bool get shouldDisplayQuickHorror => _shouldDisplayQuickHorror;
+  bool _shouldDisplayQuickLifePickup = false;
+  bool get shouldDisplayQuickLifePickup => _shouldDisplayQuickLifePickup;
+  bool _shouldDisplayBandaidPickup = false;
+  bool get shouldDisplayBandaidPickup => _shouldDisplayBandaidPickup;
+  bool _shouldDisplayJustPickedUpCannon = false;
+  bool get shouldDisplayJustPickedUpCannon => _shouldDisplayJustPickedUpCannon;
+  bool _shouldShowCoinWinEffect = false;
+  bool get shouldShowCoinWinEffect => _shouldShowCoinWinEffect;
+
+  /// this is not being used?
+  /// instead, there is a variable called rounds in magazine, which is set to 18 on reload and init
+  int _ammunition = 20;
+  int get ammunition => _ammunition;
+  bool _fullyLoaded = true;
+  bool get fullyLoaded => _fullyLoaded;
+  bool _showSkullBackground = false;
+  bool get showSkullBackground => _showSkullBackground;
+  bool _shouldDisplayTimeIncrease = false;
+  bool get shouldDisplayTimeIncrease => _shouldDisplayTimeIncrease;
+  List<Widget> get cannons => _cannons;
+  bool _shouldGetDoublePoints = false;
+  String _cannonPath = 'yellowFireBall3.gif';
+  String get cannonPath => _cannonPath;
+  int _iceCreamBulletIndex = 0;
+  int get iceCreamBulletIndex => _iceCreamBulletIndex;
+  String _iceCreamBulletPath = 'iceCream1.png';
+  String get iceCreamBulletPath => _iceCreamBulletPath;
+  String _nextIceCreamBulletPath = 'iceCream2.png';
+  String get nextIceCreamBulletPath => _nextIceCreamBulletPath;
+  String _iceCreamBulletPathForMagazine = 'iceCream1x.png';
+  List get iceCreamBullets => _iceCreamBullets;
+  List<Widget> _rotatingIceCreamPickups = [];
+  List<Widget> get rotatingIceCreamPickups => _rotatingIceCreamPickups;
+  String _pathToTwentyMMBullet = '20mmOrange.png';
+  String get pathToTwentyMMBullet => _pathToTwentyMMBullet;
+  String _pathToFortyMMBullet = '40mmOrange.png';
+  String get pathToFortyMMBullet => _pathToFortyMMBullet;
+  String _pathToColorChangingBullet = 'bulletCombo1.gif';
+  String get pathToColorChangingBullet => _pathToColorChangingBullet;
+  int _number = 0;
+  int _amountOFBonusGemsEarnedViaGamePlay = 7;
+  int _growingNmber = 3;
+  int get amountOFBonusGemsEarnedViaGamePlay =>
+      _amountOFBonusGemsEarnedViaGamePlay;
+  CannonType _currentCannon = CannonType.orange;
+  CannonType get currentCannon => _currentCannon;
+  int _roundsInMagazine = 18;
+  int get roundsInMagazine => _roundsInMagazine;
+  bool _shouldPlayReloadVoiceWarning = false;
+  bool _triedFiringWhenOutOfAmmo = false;
+  bool get triedFiringWhenOutOfAmmo => _triedFiringWhenOutOfAmmo;
+  int _indexToFireDifferentFishBullets = 0;
+  int get indexToFireDifferentFishBullets => _indexToFireDifferentFishBullets;
+  bool _shouldNotTellHellFireToCancelTimer = true;
+  int _basePointsForHittingBarrier = 3;
+  int get basePointsForHittingBarrier => _basePointsForHittingBarrier;
+  int _comboHits = 0;
+  int get comboHits => _comboHits;
+  int buildingHeight = 1;
+
+  /// game speed is not going faster
+  /// because the timer needs to be canceled, and a new timer created which moves faster
+  // void increaseGameSpeed() {
+  //   /// cancel previous timer
+  //   /// create a new timer, faster
+  //   /// check for game over, and move the buildings, create new ones, destroy at index 0, etc.
+  //   // int speed = 150;
+  //   gameSpeedTimer.cancel();
+  //   _gameSpeed = _gameSpeed - 10;
+  //   startGame();
+  // }
+  // void increaseSpeedEveryTenSeconds() {
+  //   var timer = Timer.periodic(Duration(seconds: 10), (timer) {
+  //     increaseGameSpeed();
+  //   });
+  // }
+  BuildingWidget theLast = BuildingWidget(
+    buildingHeight: 0,
+    powerUpPosition: 0,
+  );
+  BuildingWidget secondToLast = BuildingWidget(
+    buildingHeight: 0,
+    powerUpPosition: 0,
+  );
+  List<BuildingWidget> buildings = [
+    /// 5 empty buildings
+
+    BuildingWidget(
+      buildingHeight: 0,
+      powerUpPosition: 0,
+    ),
+    BuildingWidget(
+      buildingHeight: 0,
+      powerUpPosition: 0,
+    ),
+    BuildingWidget(
+      buildingHeight: 0,
+      powerUpPosition: 0,
+    ),
+    BuildingWidget(
+      buildingHeight: 0,
+      powerUpPosition: 0,
+    ),
+    BuildingWidget(
+      buildingHeight: 0,
+      powerUpPosition: 0,
+    ),
+    BuildingWidget(
+      buildingHeight: 0,
+      powerUpPosition: 0,
+    ),
+    BuildingWidget(
+      buildingHeight: 0,
+      powerUpPosition: 0,
+    ),
+    BuildingWidget(
+      buildingHeight: 0,
+      powerUpPosition: 0,
+    ),
+    BuildingWidget(
+      buildingHeight: 0,
+      powerUpPosition: 0,
+    ),
+    BuildingWidget(
+      buildingHeight: 0,
+      powerUpPosition: 0,
+    ),
+    BuildingWidget(
+      buildingHeight: 0,
+      powerUpPosition: 0,
+    ),
+    BuildingWidget(
+      buildingHeight: 0,
+      powerUpPosition: 0,
+    ),
+    BuildingWidget(
+      buildingHeight: 0,
+      powerUpPosition: 0,
+    ),
+  ];
+
+  int chooseRandomHeight() {
+    /// creates and returns a random int between 1-5
+    return Random().nextInt(12) + 0;
+  }
+
+  Timer gameSpeedTimer =
+      Timer.periodic(Duration(microseconds: 150000), (timer) {});
+
+  List<Widget> redGems = [];
+
+  List<Widget> colorGems = [];
+
+  List<Widget> extraLives = [kExtraLife];
+
+  List<Widget> flames = [
+    // CannonAmmunition(),
+    // CannonAmmunition(),
+    // CannonAmmunition(),
+    // CannonAmmunition(),
+    // CannonAmmunition(),
+    // CannonAmmunition(),
+
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
+    kblankIcon,
+  ];
+
+  List<Widget> flamesSecond = [
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
+    kblankIcon,
+  ];
+
+  List<Widget> nukeList = [];
+
+  List<Widget> _cannons = [
+    RotatingIcecreamBullet(
+      path: 'iceCream1.png',
+      height: 40.0,
+      width: 40.0,
+    )
+  ];
+  List<IceCreamBullet> _iceCreamBullets = [
+    IceCreamBullet(iceCreamPath: 'iceCream1.png'),
+    IceCreamBullet(iceCreamPath: 'iceCream2.png'),
+    IceCreamBullet(iceCreamPath: 'iceCream3.png'),
+    IceCreamBullet(iceCreamPath: 'iceCream4.png'),
+    IceCreamBullet(iceCreamPath: 'iceCream5.png'),
+    IceCreamBullet(iceCreamPath: 'iceCream6.png'),
+    IceCreamBullet(iceCreamPath: 'iceCream8.png'),
+    IceCreamBullet(iceCreamPath: 'iceCream7.png'),
+    IceCreamBullet(iceCreamPath: 'iceCreamXXX.gif'),
+  ];
+
+  List<IceCreamBulletForMagazine> _iceCreamRoundsForMagazine = [
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream2x.png'),
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream3x.png'),
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream4x.png'),
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream5x.png'),
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream6x.png'),
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream7x.png'),
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream8x.png'),
+    IceCreamBulletForMagazine(iceCreamPath: 'iceCream9X.gif'),
+  ];
+  List<HellFireContactColumns> contactGrid = [
+    HellFireContactColumns(potentialContactPosition: -1),
+    HellFireContactColumns(potentialContactPosition: -1),
+    HellFireContactColumns(potentialContactPosition: -1),
+    HellFireContactColumns(potentialContactPosition: -1),
+    HellFireContactColumns(potentialContactPosition: -1),
+    HellFireContactColumns(potentialContactPosition: -1),
+    HellFireContactColumns(potentialContactPosition: -1),
+    HellFireContactColumns(potentialContactPosition: -1),
+    HellFireContactColumns(potentialContactPosition: -1),
+    HellFireContactColumns(potentialContactPosition: -1),
+    HellFireContactColumns(potentialContactPosition: -1),
+    HellFireContactColumns(potentialContactPosition: -1),
+  ];
+
+  void resetScore() {
+    _score = 0;
+    notifyListeners();
+  }
+
+  void pauseGame() {
+    _showADeadHand = true;
+    _isPaused = true;
+    notifyListeners();
+  }
+
+  void resumeGame() {
+    _isPaused = false;
+    notifyListeners();
+  }
+
+  void start() {
+    _isPaused = false;
+    // _showADeadHand = false;
+    startGame();
+
+    notifyListeners();
+  }
+
+  void cancelGameSpeedTimerToCreateANewOne() {
+    gameSpeedTimer.cancel();
+
+    _number = Random().nextInt(_growingNmber);
+    if (_number > 1) {
+      /// that's the magic number add a gem!
+      _amountOFBonusGemsEarnedViaGamePlay =
+          _amountOFBonusGemsEarnedViaGamePlay + 3;
+      // notifyListeners();
+    }
+//todo - determine if game speed var here is simply something displayed to user vs. meaningful to the speed of the game
+    //// 01.17.23 game speed was - 100 now its - 150 to account for crystal ball helping user
+    /// was 150, reset it to 100 - game play was speeding up to fast
+    _gameSpeed = _gameSpeed - 100;
+    _reverseGameSpeedToDisplayForUserAsTheyProgress =
+        _reverseGameSpeedToDisplayForUserAsTheyProgress + 2;
+    print('game speed is = $_gameSpeed');
+    startGame();
+  }
+
+  /// this is the game loop, gamespeedtimer is essentially a loop, creating buildings and increasing speed as game play happens over time
+  /// to stop the loop, we can call cancel the timer from outside of this function
+  void startGame() {
+    // increaseSpeedEveryTenSeconds();
+    _showADeadHand = false;
+    gameSpeedTimer =
+        Timer.periodic(Duration(microseconds: _gameSpeed), (timer) {
+      if (_crashed == false) {
+        /// make game speed up as you play
+        // _gameSpeed--;
+        // print('game spped $_gameSpeed');
+        updateProgressMessage();
+        if (_isPaused == false) {
+          _score = _score + (1 * _amountOfTimeUserHitDoublePoints);
+
+          if (buildingSpace >= 3) {
+            createBuilding();
+            contactWithPowerUpChecker();
+            checkForBadPowerUps();
+            // contactWithPowerUpCheckerIndex1();
+            buildingSpace = 0;
+            cancelGameSpeedTimerToCreateANewOne();
+          } else {
+            buildingSpace++;
+
+            createEmptyBuildingSpace();
+            contactWithPowerUpChecker();
+            checkForBadPowerUps();
+
+            notifyListeners();
+          }
+        }
+      } else {
+        timer.cancel();
+        print('canceling building creation timer');
+      }
+    });
+    notifyListeners();
+  }
+
+  void gameOver() {
+    int obstacleHeight = buildings[0].buildingHeight;
+    // _hellFireIsActive = false;
+    if (_userCantDie == false) {
+      if (obstacleHeight <= 5) {
+        if (_handPosition <= obstacleHeight + 1) {
+          if (extraLives.isNotEmpty == true) {
+            soundModel.playOtherSounds('femaleDeath.mp3', _hearSoundEffects);
+            _userCantDie = true;
+            tinyAmountOfTimeForInvinsibility();
+            extraLives.removeAt(extraLives.length - 1);
+            fireBloodSplatQuick();
+            notifyListeners();
+          } else if (extraLives.isEmpty == true) {
+            soundModel.playOtherSoundsTwo('manDeath.mp3', _hearSoundEffects);
+            soundModel.playOtherThree('splat.mp3', _hearSoundEffects);
+            soundModel.playOtherFour('deathCallsForMe.mp3', _hearSoundEffects);
+            soundModel.playOtherFive('fireworks.mp3', _hearSoundEffects);
+            soundModel.playOtherSix('bulletShot.mp3', _hearSoundEffects);
+            fireQuickHorror();
+
+            _crashed = true;
+            _showADeadHand = true;
+            // _isClimbing = true;
+            print('craashed = $_crashed');
+            print('game over bottom buildling');
+            print(obstacleHeight);
+            print(_handPosition);
+            print('now updating the UI');
+            notifyListeners();
+          }
+        }
+      } else if (obstacleHeight >= 6) {
+        print('obstance hight from top $obstacleHeight');
+        if (_handPosition >= obstacleHeight - 1) {
+          if (extraLives.isNotEmpty == true) {
+            soundModel.playOtherEight('femaleDeath.mp3', _hearSoundEffects);
+            fireBloodSplatQuick();
+
+            _userCantDie = true;
+            tinyAmountOfTimeForInvinsibility();
+            extraLives.removeAt(extraLives.length - 1);
+            notifyListeners();
+          }
+
+          /// one wiggle room for top buildlings
+          else if (extraLives.isEmpty == true) {
+            fireQuickHorror();
+
+            _crashed = true;
+            // _isClimbing = true;
+            _showADeadHand = true;
+            soundModel.playOtherThree('manDeath.mp3', _hearSoundEffects);
+            soundModel.playOtherFour('splat.mp3', _hearSoundEffects);
+            soundModel.playOtherFive('deathCallsForMe.mp3', _hearSoundEffects);
+            soundModel.playOtherSix('fireworks.mp3', _hearSoundEffects);
+            // soundModel.playOtherSoundsTwo('bulletShot.mp3', _hearSoundEffects);
+            soundModel.playOtherSounds(
+                '1-21-23BurstRifle.mp3', hearSoundEffects);
+
+            print('craashed = $_crashed');
+            print('game over top buildling');
+            print('buildling height: $obstacleHeight');
+            print('taco position ${_handPosition}');
+
+            print('now updating the UI');
+            notifyListeners();
+          }
+        }
+      }
+    }
+  }
 
   void turnOnSoundEffects() {
     _hearSoundEffects = true;
@@ -85,10 +533,6 @@ class GameStatusProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  bool _hearBackgroundMusic = true;
-
-  bool get hearBackgroundMusic => _hearBackgroundMusic;
-
   void setBackgroundMusicToFalse() {
     _hearBackgroundMusic = false;
     notifyListeners();
@@ -98,22 +542,6 @@ class GameStatusProvider with ChangeNotifier {
     _hearBackgroundMusic = true;
     notifyListeners();
   }
-
-  double _opacityOfBlackGameBoy = 1.0;
-
-  double get opacityOfBlackGameBoy => _opacityOfBlackGameBoy;
-
-  bool _redGameBoyInsteadOfYellow = false;
-
-  bool get redGameBoyInsteadOfYellow => _redGameBoyInsteadOfYellow;
-
-  bool _purpleGameBoy = false;
-
-  bool _silverGameBoy = false;
-
-  bool get silverGameBoy => _silverGameBoy;
-
-  bool get purpleGameBoy => _purpleGameBoy;
 
   void updateGameBoyOpacity() {
     for (var i = 0; i < 12; i++) {
@@ -141,24 +569,6 @@ class GameStatusProvider with ChangeNotifier {
       });
     }
   }
-
-  //// list of zombie hands
-
-  List<String> _zombieHandsForOnScreenEffectWhenUserGrabsExtraLife = [
-    // 'bbbbInvertZombieHandReach.gif',
-    // 'bbbbZombieReachBlackBlueGreen.gif',
-    'bbbbZombieReachBlackGreen.gif',
-    'bbbbZombieReachGreenGreen.gif',
-    'bbbbZombieReachPinkBlue.gif',
-    'bbbbZombieReachRedGreen.gif',
-    'bbbbZombieReachRedWhiteBlue.gif',
-  ];
-
-  int _iterateThroughZombieHandList = 0;
-
-  String _pathToZombieHandReach = 'bbbbZombieReachRedWhiteBlue.gif';
-
-  String get pathToZombieHandReach => _pathToZombieHandReach;
 
   void updateZombiePath() {
     if (_iterateThroughZombieHandList <
@@ -289,14 +699,6 @@ class GameStatusProvider with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  bool _isClimbing = false;
-
-  bool get isClimbing => _isClimbing;
-
-  bool _showADeadHand = false;
-
-  bool get showADeadHand => _showADeadHand;
-
   void handClimb() {
     if (_isPaused == false) {
       /// when user taps, let the taco climb
@@ -399,10 +801,6 @@ class GameStatusProvider with ChangeNotifier {
     }
   }
 
-  String _progressMessage = '';
-
-  String get progressMessage => _progressMessage;
-
   void updateProgressMessage() {
     if (_score > 20 && _score < 25) {
       _progressMessage = 'wow!';
@@ -434,10 +832,6 @@ class GameStatusProvider with ChangeNotifier {
       notifyListeners();
     }
   }
-
-  bool _crashed = true;
-
-  bool get crashed => _crashed;
 
   void handFall() {
     var timer = Timer.periodic(Duration(milliseconds: 200), (timer) {
@@ -485,160 +879,12 @@ class GameStatusProvider with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  bool _userCantDie = false;
-
   void tinyAmountOfTimeForInvinsibility() {
     Future.delayed(Duration(milliseconds: 1200), () {
       _userCantDie = false;
       notifyListeners();
     });
   }
-
-  void gameOver() {
-    int obstacleHeight = buildings[0].buildingHeight;
-    // _hellFireIsActive = false;
-    if (_userCantDie == false) {
-      if (obstacleHeight <= 5) {
-        if (_handPosition <= obstacleHeight + 1) {
-          if (extraLives.isNotEmpty == true) {
-            soundModel.playOtherSounds('femaleDeath.mp3', _hearSoundEffects);
-            _userCantDie = true;
-            tinyAmountOfTimeForInvinsibility();
-            extraLives.removeAt(extraLives.length - 1);
-            fireBloodSplatQuick();
-            notifyListeners();
-          } else if (extraLives.isEmpty == true) {
-            soundModel.playOtherSoundsTwo('manDeath.mp3', _hearSoundEffects);
-            soundModel.playOtherThree('splat.mp3', _hearSoundEffects);
-            soundModel.playOtherFour('deathCallsForMe.mp3', _hearSoundEffects);
-            soundModel.playOtherFive('fireworks.mp3', _hearSoundEffects);
-            soundModel.playOtherSix('bulletShot.mp3', _hearSoundEffects);
-            fireQuickHorror();
-
-            _crashed = true;
-            _showADeadHand = true;
-            // _isClimbing = true;
-            print('craashed = $_crashed');
-            print('game over bottom buildling');
-            print(obstacleHeight);
-            print(_handPosition);
-            print('now updating the UI');
-            notifyListeners();
-          }
-        }
-      } else if (obstacleHeight >= 6) {
-        print('obstance hight from top $obstacleHeight');
-        if (_handPosition >= obstacleHeight - 1) {
-          if (extraLives.isNotEmpty == true) {
-            soundModel.playOtherEight('femaleDeath.mp3', _hearSoundEffects);
-            fireBloodSplatQuick();
-
-            _userCantDie = true;
-            tinyAmountOfTimeForInvinsibility();
-            extraLives.removeAt(extraLives.length - 1);
-            notifyListeners();
-          }
-
-          /// one wiggle room for top buildlings
-          else if (extraLives.isEmpty == true) {
-            fireQuickHorror();
-
-            _crashed = true;
-            // _isClimbing = true;
-            _showADeadHand = true;
-            soundModel.playOtherThree('manDeath.mp3', _hearSoundEffects);
-            soundModel.playOtherFour('splat.mp3', _hearSoundEffects);
-            soundModel.playOtherFive('deathCallsForMe.mp3', _hearSoundEffects);
-            soundModel.playOtherSix('fireworks.mp3', _hearSoundEffects);
-            // soundModel.playOtherSoundsTwo('bulletShot.mp3', _hearSoundEffects);
-            soundModel.playOtherSounds(
-                '1-21-23BurstRifle.mp3', hearSoundEffects);
-
-            print('craashed = $_crashed');
-            print('game over top buildling');
-            print('buildling height: $obstacleHeight');
-            print('taco position ${_handPosition}');
-
-            print('now updating the UI');
-            notifyListeners();
-          }
-        }
-      }
-    }
-  }
-
-  List<BuildingWidget> buildings = [
-    /// 5 empty buildings
-
-    BuildingWidget(
-      buildingHeight: 0,
-      powerUpPosition: 0,
-    ),
-    BuildingWidget(
-      buildingHeight: 0,
-      powerUpPosition: 0,
-    ),
-    BuildingWidget(
-      buildingHeight: 0,
-      powerUpPosition: 0,
-    ),
-    BuildingWidget(
-      buildingHeight: 0,
-      powerUpPosition: 0,
-    ),
-    BuildingWidget(
-      buildingHeight: 0,
-      powerUpPosition: 0,
-    ),
-    BuildingWidget(
-      buildingHeight: 0,
-      powerUpPosition: 0,
-    ),
-    BuildingWidget(
-      buildingHeight: 0,
-      powerUpPosition: 0,
-    ),
-    BuildingWidget(
-      buildingHeight: 0,
-      powerUpPosition: 0,
-    ),
-    BuildingWidget(
-      buildingHeight: 0,
-      powerUpPosition: 0,
-    ),
-    BuildingWidget(
-      buildingHeight: 0,
-      powerUpPosition: 0,
-    ),
-    BuildingWidget(
-      buildingHeight: 0,
-      powerUpPosition: 0,
-    ),
-    BuildingWidget(
-      buildingHeight: 0,
-      powerUpPosition: 0,
-    ),
-    BuildingWidget(
-      buildingHeight: 0,
-      powerUpPosition: 0,
-    ),
-  ];
-
-  int buildingHeight = 1;
-
-  int chooseRandomHeight() {
-    /// creates and returns a random int between 1-5
-    return Random().nextInt(12) + 0;
-  }
-
-  BuildingWidget theLast = BuildingWidget(
-    buildingHeight: 0,
-    powerUpPosition: 0,
-  );
-  BuildingWidget secondToLast = BuildingWidget(
-    buildingHeight: 0,
-    powerUpPosition: 0,
-  );
 
   void createBuilding() {
     // BuildingWidget theLast = buildings[0];
@@ -677,65 +923,6 @@ class GameStatusProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  int _gemPosition = 0;
-
-  String _trackGemType = 'red';
-
-  List<Widget> redGems = [];
-
-  List<Widget> colorGems = [];
-
-  List<Widget> extraLives = [kExtraLife];
-
-  List<Widget> flames = [
-    // CannonAmmunition(),
-    // CannonAmmunition(),
-    // CannonAmmunition(),
-    // CannonAmmunition(),
-    // CannonAmmunition(),
-    // CannonAmmunition(),
-
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
-    kblankIcon,
-  ];
-
-  List<Widget> flamesSecond = [
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
-    kblankIcon,
-  ];
-
-  List<Widget> nukeList = [];
-
-  /// set crashed = true if the user crashed into a knife without any knife defense
-  /// if the did have a knife, decrease the value
-  ///
-  ///
-
-  bool _shouldDisplayDoublePointsEffects = false;
-
-  bool get shouldDisplayDoublePointsEffects =>
-      _shouldDisplayDoublePointsEffects;
-
-  int _amountOfTimeUserHitDoublePoints = 1;
-
-  int get amountOfTimeUserHitDoublePoints => _amountOfTimeUserHitDoublePoints;
-
   void fireDoublePointsEffects() {
     soundModel.playOtherThree('arcadeAndApplause.mp3', _hearSoundEffects);
     // _score = _score + 50;
@@ -750,10 +937,6 @@ class GameStatusProvider with ChangeNotifier {
     });
   }
 
-  bool _shouldDisplayExplosion1 = false;
-
-  bool get shouldDisplayExplosion1 => _shouldDisplayExplosion1;
-
   void fireExplosion1() {
     // _score = _score + 50;
     _shouldDisplayExplosion1 = true;
@@ -763,10 +946,6 @@ class GameStatusProvider with ChangeNotifier {
       notifyListeners();
     });
   }
-
-  bool _shouldDisplayExplosion2 = false;
-
-  bool get shouldDisplayExplosion2 => _shouldDisplayExplosion2;
 
   void fireExplosion2() {
     // _score = _score + 50;
@@ -778,10 +957,6 @@ class GameStatusProvider with ChangeNotifier {
     });
   }
 
-  bool _shouldDisplayBloodSplatQuick = false;
-
-  bool get shouldDisplayBloodSplatQuick => _shouldDisplayBloodSplatQuick;
-
   void fireBloodSplatQuick() {
     // _score = _score + 50;
     _shouldDisplayBloodSplatQuick = true;
@@ -791,10 +966,6 @@ class GameStatusProvider with ChangeNotifier {
       notifyListeners();
     });
   }
-
-  bool _shouldDisplayKnifeDefense = false;
-
-  bool get shouldDisplayKnifeDefense => _shouldDisplayKnifeDefense;
 
   void fireQuickKnifeDefense() {
     // _score = _score + 50;
@@ -809,13 +980,6 @@ class GameStatusProvider with ChangeNotifier {
     });
   }
 
-  bool
-      _shouldDisplayLossALifeAndNotAGameOverAndNotAKnifeDefenseDueToBeingStabbed =
-      false;
-
-  bool get shouldDisplayLossALifeAndNotAGameOverAndNotAKnifeDefenseDueToBeingStabbed =>
-      _shouldDisplayLossALifeAndNotAGameOverAndNotAKnifeDefenseDueToBeingStabbed;
-
   void fireQuickScreamWhenUserLosesALifeAndNotARedGemWhenStabbed() {
     // _score = _score + 50;
     _shouldDisplayLossALifeAndNotAGameOverAndNotAKnifeDefenseDueToBeingStabbed =
@@ -828,10 +992,6 @@ class GameStatusProvider with ChangeNotifier {
     });
   }
 
-  bool _shouldDisplayQuickHorror = false;
-
-  bool get shouldDisplayQuickHorror => _shouldDisplayQuickHorror;
-
   void fireQuickHorror() {
     // _score = _score + 50;
     _shouldDisplayQuickHorror = true;
@@ -841,10 +1001,6 @@ class GameStatusProvider with ChangeNotifier {
       notifyListeners();
     });
   }
-
-  bool _shouldDisplayQuickLifePickup = false;
-
-  bool get shouldDisplayQuickLifePickup => _shouldDisplayQuickLifePickup;
 
   void fireQuickLifePickup() {
     soundModel.playOtherSounds5x('1-21-23Gingle8Bit.mp3', hearSoundEffects);
@@ -858,10 +1014,6 @@ class GameStatusProvider with ChangeNotifier {
     });
   }
 
-  bool _shouldDisplayBandaidPickup = false;
-
-  bool get shouldDisplayBandaidPickup => _shouldDisplayBandaidPickup;
-
   void fireQuickBandaidPickup() {
     soundModel.playOtherSounds5x('1-21-23Gingle8Bit.mp3', hearSoundEffects);
     // _score = _score + 50;
@@ -872,10 +1024,6 @@ class GameStatusProvider with ChangeNotifier {
       notifyListeners();
     });
   }
-
-  bool _shouldDisplayJustPickedUpCannon = false;
-
-  bool get shouldDisplayJustPickedUpCannon => _shouldDisplayJustPickedUpCannon;
 
   void fireJustPickedUpCannon() {
     if (_iceCreamBulletIndex < _iceCreamBullets.length - 1) {
@@ -898,10 +1046,6 @@ class GameStatusProvider with ChangeNotifier {
       notifyListeners();
     });
   }
-
-  bool _shouldShowCoinWinEffect = false;
-
-  bool get shouldShowCoinWinEffect => _shouldShowCoinWinEffect;
 
   void fireCoinWinEffect() {
     // _score = _score + 10;
@@ -955,23 +1099,10 @@ class GameStatusProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  /// this is not being used?
-  /// instead, there is a variable called rounds in magazine, which is set to 18 on reload and init
-  int _ammunition = 20;
-  int get ammunition => _ammunition;
-
-  bool _fullyLoaded = true;
-
-  bool get fullyLoaded => _fullyLoaded;
-
   void switchCannon() {
     _fullyLoaded = !_fullyLoaded;
     notifyListeners();
   }
-
-  bool _showSkullBackground = false;
-
-  bool get showSkullBackground => _showSkullBackground;
 
   void turnOnAndOffSkullBackground() {
     _showSkullBackground = true;
@@ -1044,10 +1175,6 @@ class GameStatusProvider with ChangeNotifier {
     }
   }
 
-  bool _shouldDisplayTimeIncrease = false;
-
-  bool get shouldDisplayTimeIncrease => _shouldDisplayTimeIncrease;
-
   //// rather than speeding game up, slow it down?!?!?!?
   /// the game speeds up when you hit a crystal ball
   /// to make game play faster, decrease game speed
@@ -1065,16 +1192,6 @@ class GameStatusProvider with ChangeNotifier {
       notifyListeners();
     });
   }
-
-  List<Widget> _cannons = [
-    RotatingIcecreamBullet(
-      path: 'iceCream1.png',
-      height: 40.0,
-      width: 40.0,
-    )
-  ];
-
-  List<Widget> get cannons => _cannons;
 
   void unloadHellFire() {
     flames = [];
@@ -1117,56 +1234,6 @@ class GameStatusProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  bool _shouldGetDoublePoints = false;
-
-  String _cannonPath = 'yellowFireBall3.gif';
-
-  String get cannonPath => _cannonPath;
-
-  int _iceCreamBulletIndex = 0;
-
-  int get iceCreamBulletIndex => _iceCreamBulletIndex;
-
-  String _iceCreamBulletPath = 'iceCream1.png';
-
-  String get iceCreamBulletPath => _iceCreamBulletPath;
-
-  String _nextIceCreamBulletPath = 'iceCream2.png';
-
-  String get nextIceCreamBulletPath => _nextIceCreamBulletPath;
-
-  String _iceCreamBulletPathForMagazine = 'iceCream1x.png';
-
-  List<IceCreamBullet> _iceCreamBullets = [
-    IceCreamBullet(iceCreamPath: 'iceCream1.png'),
-    IceCreamBullet(iceCreamPath: 'iceCream2.png'),
-    IceCreamBullet(iceCreamPath: 'iceCream3.png'),
-    IceCreamBullet(iceCreamPath: 'iceCream4.png'),
-    IceCreamBullet(iceCreamPath: 'iceCream5.png'),
-    IceCreamBullet(iceCreamPath: 'iceCream6.png'),
-    IceCreamBullet(iceCreamPath: 'iceCream8.png'),
-    IceCreamBullet(iceCreamPath: 'iceCream7.png'),
-    IceCreamBullet(iceCreamPath: 'iceCreamXXX.gif'),
-  ];
-
-  List<IceCreamBulletForMagazine> _iceCreamRoundsForMagazine = [
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream1x.png'),
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream2x.png'),
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream3x.png'),
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream4x.png'),
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream5x.png'),
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream6x.png'),
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream7x.png'),
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream8x.png'),
-    IceCreamBulletForMagazine(iceCreamPath: 'iceCream9X.gif'),
-  ];
-
-  List get iceCreamBullets => _iceCreamBullets;
-
-  List<Widget> _rotatingIceCreamPickups = [];
-
-  List<Widget> get rotatingIceCreamPickups => _rotatingIceCreamPickups;
-
   void addFreshlyPickedUpIceCreamToGamePlayAreaForRotatingAnimation() {
     _rotatingIceCreamPickups = [];
     _rotatingIceCreamPickups.add(
@@ -1186,18 +1253,6 @@ class GameStatusProvider with ChangeNotifier {
               ))),
     );
   }
-
-  String _pathToTwentyMMBullet = '20mmOrange.png';
-
-  String get pathToTwentyMMBullet => _pathToTwentyMMBullet;
-
-  String _pathToFortyMMBullet = '40mmOrange.png';
-
-  String get pathToFortyMMBullet => _pathToFortyMMBullet;
-
-  String _pathToColorChangingBullet = 'bulletCombo1.gif';
-
-  String get pathToColorChangingBullet => _pathToColorChangingBullet;
 
   void contactWithPowerUpChecker() {
     int _gemLocationAtIndexZero = buildings[0].powerUpPosition;
@@ -1528,80 +1583,6 @@ class GameStatusProvider with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  bool _isPaused = true;
-
-  bool get isPaused => _isPaused;
-
-  void pauseGame() {
-    _showADeadHand = true;
-    _isPaused = true;
-    notifyListeners();
-  }
-
-  void resumeGame() {
-    _isPaused = false;
-    notifyListeners();
-  }
-
-  void start() {
-    _isPaused = false;
-    // _showADeadHand = false;
-    startGame();
-
-    notifyListeners();
-  }
-
-  int buildingSpace = 0;
-
-  bool shouldMakeUpsideDownBuilding = false;
-
-  int _score = 0;
-
-  int get score => _score;
-
-  void resetScore() {
-    _score = 0;
-    notifyListeners();
-  }
-
-  int _gameSpeed = 150000;
-
-  int _reverseGameSpeedToDisplayForUserAsTheyProgress = 100;
-
-  int get reverseGameSpeedToDisplayForUserAsTheyProgress =>
-      _reverseGameSpeedToDisplayForUserAsTheyProgress;
-
-  /// game speed is not going faster
-  /// because the timer needs to be canceled, and a new timer created which moves faster
-
-  // void increaseGameSpeed() {
-  //   /// cancel previous timer
-  //   /// create a new timer, faster
-  //   /// check for game over, and move the buildings, create new ones, destroy at index 0, etc.
-  //   // int speed = 150;
-  //   gameSpeedTimer.cancel();
-  //   _gameSpeed = _gameSpeed - 10;
-  //   startGame();
-  // }
-
-  // void increaseSpeedEveryTenSeconds() {
-  //   var timer = Timer.periodic(Duration(seconds: 10), (timer) {
-  //     increaseGameSpeed();
-  //   });
-  // }
-
-  Timer gameSpeedTimer =
-      Timer.periodic(Duration(microseconds: 150000), (timer) {});
-
-  int _number = 0;
-
-  int _amountOFBonusGemsEarnedViaGamePlay = 7;
-
-  int _growingNmber = 3;
-
-  int get amountOFBonusGemsEarnedViaGamePlay =>
-      _amountOFBonusGemsEarnedViaGamePlay;
-
   void updateFrequencyOfGemsEarnedBasedOnScore() {
     if (_score <= 10000) {
       _growingNmber = 1;
@@ -1618,63 +1599,6 @@ class GameStatusProvider with ChangeNotifier {
     } else if (_score <= 70000) {
       _growingNmber = 7;
     }
-  }
-
-  void cancelGameSpeedTimerToCreateANewOne() {
-    gameSpeedTimer.cancel();
-
-    _number = Random().nextInt(_growingNmber);
-    if (_number > 1) {
-      /// that's the magic number add a gem!
-      _amountOFBonusGemsEarnedViaGamePlay =
-          _amountOFBonusGemsEarnedViaGamePlay + 3;
-      // notifyListeners();
-    }
-
-    //// 01.17.23 game speed was - 100 now its - 150 to account for crystal ball helping user
-    _gameSpeed = _gameSpeed - 150;
-    _reverseGameSpeedToDisplayForUserAsTheyProgress =
-        _reverseGameSpeedToDisplayForUserAsTheyProgress + 2;
-    print('game speed is = $_gameSpeed');
-    startGame();
-  }
-
-  void startGame() {
-    // increaseSpeedEveryTenSeconds();
-    _showADeadHand = false;
-    gameSpeedTimer =
-        Timer.periodic(Duration(microseconds: _gameSpeed), (timer) {
-      if (_crashed == false) {
-        /// make game speed up as you play
-        // _gameSpeed--;
-        // print('game spped $_gameSpeed');
-        updateProgressMessage();
-        if (_isPaused == false) {
-          _score = _score + (1 * _amountOfTimeUserHitDoublePoints);
-
-          if (buildingSpace >= 3) {
-            createBuilding();
-            contactWithPowerUpChecker();
-            checkForBadPowerUps();
-            // contactWithPowerUpCheckerIndex1();
-            buildingSpace = 0;
-            cancelGameSpeedTimerToCreateANewOne();
-          } else {
-            buildingSpace++;
-
-            createEmptyBuildingSpace();
-            contactWithPowerUpChecker();
-            checkForBadPowerUps();
-
-            notifyListeners();
-          }
-        }
-      } else {
-        timer.cancel();
-        print('canceling building creation timer');
-      }
-    });
-    notifyListeners();
   }
 
   List<HellFirePowerUpColumns> hellFireColumns = [
@@ -1724,25 +1648,6 @@ class GameStatusProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  CannonType _currentCannon = CannonType.orange;
-
-  CannonType get currentCannon => _currentCannon;
-
-  List<HellFireContactColumns> contactGrid = [
-    HellFireContactColumns(potentialContactPosition: -1),
-    HellFireContactColumns(potentialContactPosition: -1),
-    HellFireContactColumns(potentialContactPosition: -1),
-    HellFireContactColumns(potentialContactPosition: -1),
-    HellFireContactColumns(potentialContactPosition: -1),
-    HellFireContactColumns(potentialContactPosition: -1),
-    HellFireContactColumns(potentialContactPosition: -1),
-    HellFireContactColumns(potentialContactPosition: -1),
-    HellFireContactColumns(potentialContactPosition: -1),
-    HellFireContactColumns(potentialContactPosition: -1),
-    HellFireContactColumns(potentialContactPosition: -1),
-    HellFireContactColumns(potentialContactPosition: -1),
-  ];
-
   // List<HellFireContactColumns> hellFireContactColumns = [];
 
   void resetHellFireContactLocations() {
@@ -1762,10 +1667,6 @@ class GameStatusProvider with ChangeNotifier {
     ];
     notifyListeners();
   }
-
-  int _comboHits = 0;
-
-  int get comboHits => _comboHits;
 
   ///contact points and fire animations at the correct contact point
   ///with 1/50th the amount of code or so
@@ -1844,10 +1745,6 @@ class GameStatusProvider with ChangeNotifier {
       }
     }
   }
-
-  int _basePointsForHittingBarrier = 3;
-
-  int get basePointsForHittingBarrier => _basePointsForHittingBarrier;
 
   void pointsForHittingPerCannonType() {
     if (_crashed == false) {
@@ -1987,19 +1884,6 @@ class GameStatusProvider with ChangeNotifier {
   /// combo data provider
   ///
 
-  int _roundsInMagazine = 18;
-  int get roundsInMagazine => _roundsInMagazine;
-
-  bool _shouldPlayReloadVoiceWarning = false;
-
-  bool _triedFiringWhenOutOfAmmo = false;
-
-  bool get triedFiringWhenOutOfAmmo => _triedFiringWhenOutOfAmmo;
-
-  int _indexToFireDifferentFishBullets = 0;
-
-  int get indexToFireDifferentFishBullets => _indexToFireDifferentFishBullets;
-
   void fireHellFire() {
     _indexToFireDifferentFishBullets = Random().nextInt(5);
 
@@ -2054,8 +1938,6 @@ class GameStatusProvider with ChangeNotifier {
       }
     }
   }
-
-  bool _shouldNotTellHellFireToCancelTimer = true;
 
   void hellFirePowerUp() {
     var timer = Timer.periodic(Duration(milliseconds: 10), (timer) {
