@@ -1,13 +1,11 @@
 import 'package:flappy_taco/models/sound_model.dart';
 import 'package:flappy_taco/widgets/flashing_text_message_widget.dart';
-import 'package:flappy_taco/widgets/flashing_text_widget.dart';
-import 'package:flappy_taco/widgets/power_ups_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../constants.dart';
-import '../providers/game_status_provider.dart';
-import 'cannon_switch_widget.dart';
+import '../../constants.dart';
+import '../../providers/game_status_provider.dart';
+import '../cannon_switch_widget.dart';
 
 SoundModel soundModel = SoundModel();
 

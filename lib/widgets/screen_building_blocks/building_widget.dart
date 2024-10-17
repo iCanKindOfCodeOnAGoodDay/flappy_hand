@@ -1,19 +1,16 @@
 import 'package:flappy_taco/constants.dart';
 import 'package:flappy_taco/providers/game_status_provider.dart';
-import 'package:flappy_taco/providers/premium_content_provider.dart';
-
 import 'package:flappy_taco/widgets/development_block_widget.dart';
 import 'package:flappy_taco/widgets/dynamic_barrier_coin.dart';
-
-import 'package:flappy_taco/widgets/rotating_barrier_widget.dart';
 import 'package:flappy_taco/widgets/rotating_icecream_bullet_widget.dart';
-
 import 'package:flappy_taco/widgets/selected_winnables/selected_beast.dart';
 import 'package:flappy_taco/widgets/selected_winnables/selected_grendade_widget.dart';
 import 'package:flappy_taco/widgets/selected_winnables/selected_knife_widget.dart';
 import 'package:flappy_taco/widgets/selected_winnables/selected_rocket.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+/// the bomb pickup is hard coded, non-changeable , kNuke
 
 class BuildingWidget extends StatelessWidget {
   int buildingHeight = 1;

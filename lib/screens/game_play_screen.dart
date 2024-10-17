@@ -1,34 +1,14 @@
-import 'dart:async';
-
-import 'package:flappy_taco/constants.dart';
 import 'package:flappy_taco/providers/game_status_provider.dart';
 import 'package:flappy_taco/providers/premium_content_provider.dart';
-import 'package:flappy_taco/screens/shop_drawer_widget.dart';
-import 'package:flappy_taco/widgets/top_screen_controls_and_score_widgets.dart';
-import 'package:flappy_taco/widgets/bottom_screen_images.dart';
-import 'package:flappy_taco/widgets/cannon_ammunition_widget.dart';
-import 'package:flappy_taco/widgets/cannon_button.dart';
-import 'package:flappy_taco/widgets/cannon_switch_widget.dart';
-import 'package:flappy_taco/widgets/coin_win_effect.dart';
-import 'package:flappy_taco/widgets/combo_hits.dart';
-import 'package:flappy_taco/widgets/death_effect_column.dart';
 import 'package:flappy_taco/screens/end_drawer_account_and_settings_widget.dart';
-import 'package:flappy_taco/widgets/fireball_under_hand_column.dart';
-import 'package:flappy_taco/widgets/flashing_text_widget.dart';
-import 'package:flappy_taco/widgets/game_controls_widgets.dart';
-import 'package:flappy_taco/widgets/game_play_area.dart';
-import 'package:flappy_taco/widgets/power_up_widgets_lives_and.dart';
-import 'package:flappy_taco/widgets/power_ups_widget.dart';
-import 'package:flappy_taco/widgets/hand_column_widget.dart';
-import 'package:flappy_taco/widgets/text_widget.dart';
-import 'package:flappy_taco/widgets/top_of_Gameboy_widgets.dart';
-import 'package:flappy_taco/widgets/top_screen_widgets.dart';
+import 'package:flappy_taco/screens/shop_drawer_widget.dart';
+import 'package:flappy_taco/widgets/screen_building_blocks/game_controls_widgets.dart';
+import 'package:flappy_taco/widgets/screen_building_blocks/game_play_area.dart';
+import 'package:flappy_taco/widgets/screen_building_blocks/power_up_widgets_lives_and.dart';
+import 'package:flappy_taco/widgets/screen_building_blocks/top_screen_controls_and_score_widgets.dart';
 import 'package:flappy_taco/widgets/two_x_wineffect_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
-
-import '../widgets/bottom_of_gameboy_widgets.dart';
 
 class GamePlayScreen extends StatelessWidget {
   @override

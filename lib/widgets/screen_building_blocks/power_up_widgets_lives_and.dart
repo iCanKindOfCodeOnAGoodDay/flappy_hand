@@ -2,7 +2,7 @@ import 'package:flappy_taco/widgets/power_ups_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/game_status_provider.dart';
+import '../../providers/game_status_provider.dart';
 
 class SecondPowerUps extends StatelessWidget {
   @override

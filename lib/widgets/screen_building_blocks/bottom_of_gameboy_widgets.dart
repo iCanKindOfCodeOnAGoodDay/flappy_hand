@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/game_status_provider.dart';
+import '../../providers/game_status_provider.dart';
 
 class BottomOfGameboyWidgets extends StatelessWidget {
   const BottomOfGameboyWidgets({Key? key}) : super(key: key);

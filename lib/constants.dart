@@ -515,7 +515,7 @@ Container kNuke = Container(
   width: 40.0,
   decoration: BoxDecoration(
       image: DecorationImage(
-          fit: BoxFit.cover, image: AssetImage('images/cherryBomb.png'))),
+          fit: BoxFit.cover, image: AssetImage('images/21Trump.gif'))),
 );
 
 Container kSkullPatch = Container(

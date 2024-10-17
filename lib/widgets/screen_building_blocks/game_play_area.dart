@@ -1,16 +1,13 @@
-import 'package:flappy_taco/providers/premium_content_provider.dart';
-import 'package:flappy_taco/widgets/rotating_icecream_bullet_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:flappy_taco/providers/game_status_provider.dart';
+import 'package:flappy_taco/providers/premium_content_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../constants.dart';
-import 'cannon_ammunition_widget.dart';
-import 'combo_hits.dart';
-import 'death_effect_column.dart';
-import 'fireball_under_hand_column.dart';
-import 'hand_column_widget.dart';
+import '../../constants.dart';
+import '../combo_hits.dart';
+import '../death_effect_column.dart';
+import '../fireball_under_hand_column.dart';
+import '../hand_column_widget.dart';
 
 class GamePlayAreaWidget extends StatelessWidget {
   const GamePlayAreaWidget({Key? key}) : super(key: key);
@@ -42,7 +39,7 @@ class GamePlayAreaWidget extends StatelessWidget {
                               .shouldDisplayLossALifeAndNotAGameOverAndNotAKnifeDefenseDueToBeingStabbed ==
                           true
                       ? AssetImage(
-                          "images/lilWayneOne.gif",
+                          "images/jenniferLaurenceNo.GIF",
                           // 'images/blood2.gif',
                           // 'images/blood2LightBlue.gif',
                         )
@@ -78,14 +75,16 @@ class GamePlayAreaWidget extends StatelessWidget {
                                           .shouldDisplayBandaidPickup ==
                                       true
                                   ? AssetImage(
+
                                       ///fun hand icon image
                                       // 'images/winnerLadyFistPump.gif',
+                                      'images/djangoLiondardoOne.gif'
 
                                       // 'images/blood2White2.gif',
                                       // ///pimp girl
-                                      'images/IMG_6550_pimPGirl.PNG',
+                                      // 'images/IMG_6550_pimPGirl.PNG',
                                       // 'images/handGem1-23-23Eo.gif',
-                                    )
+                                      )
                                   : context
                                               .watch<GameStatusProvider>()
                                               .crashed ==
@@ -123,7 +122,7 @@ class GamePlayAreaWidget extends StatelessWidget {
                                 fit: BoxFit.cover,
                                 image: AssetImage(
                                   // 'images/djangoFireJamieFoxTwo.gif',
-                                  'images/steveWinningALife.gif',
+                                  'images/deathStar150.gif',
                                   // 'images/explosionFlamesBrightRed.gif',
                                 )))
                         : context
@@ -211,7 +210,7 @@ class GamePlayAreaWidget extends StatelessWidget {
                                       fit: BoxFit.cover,
                                       image: AssetImage(
                                         // 'images/IMG_7151_monsters.GIF',
-                                        'images/scaryBabyBuff.gif',
+                                        'images/katyPerryRidingHorse.gif',
                                         // 'images/mmZombieChargeInvertRed.gif',
                                       )))
                               : BoxDecoration(),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/game_status_provider.dart';
+import '../../providers/game_status_provider.dart';
 
 class TopScreenWidgets extends StatelessWidget {
   const TopScreenWidgets({Key? key}) : super(key: key);

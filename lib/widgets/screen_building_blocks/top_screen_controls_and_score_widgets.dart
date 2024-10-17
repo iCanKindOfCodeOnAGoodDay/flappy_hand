@@ -3,10 +3,9 @@ import 'package:flappy_taco/widgets/flashing_text_message_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../constants.dart';
-import '../providers/game_status_provider.dart';
-import 'coin_win_effect.dart';
-import 'flashing_text_widget.dart';
+import '../../constants.dart';
+import '../../providers/game_status_provider.dart';
+import '../coin_win_effect.dart';
 
 class TopOfScreenControlsAndScoreWidgets extends StatelessWidget {
   const TopOfScreenControlsAndScoreWidgets({Key? key}) : super(key: key);

@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flappy_taco/constants.dart';
-import 'package:flappy_taco/widgets/building_widget.dart';
 import 'package:flappy_taco/widgets/bullet_for_magazine_widget.dart';
 import 'package:flappy_taco/widgets/cannon_contact_effect_Columns.dart';
 import 'package:flappy_taco/widgets/hell_fire_columns.dart';
 import 'package:flappy_taco/widgets/ice_cream_bullet.dart';
+import 'package:flappy_taco/widgets/screen_building_blocks/building_widget.dart';
 import 'package:flappy_taco/widgets/selected_winnables/selected_grendade_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -112,7 +112,7 @@ class GameStatusProvider with ChangeNotifier {
   bool shouldMakeUpsideDownBuilding = false;
   int _score = 0;
   int get score => _score;
-  int _gameSpeed = 150000;
+  int _gameSpeed = 200000;
   int _reverseGameSpeedToDisplayForUserAsTheyProgress = 100;
   int get reverseGameSpeedToDisplayForUserAsTheyProgress =>
       _reverseGameSpeedToDisplayForUserAsTheyProgress;
@@ -1113,147 +1113,6 @@ class GameStatusProvider with ChangeNotifier {
     });
   }
 
-  /// negative power ups, knife, beast, time increase.
-  void checkForBadPowerUps() {
-    int _gemLocationAtIndexZero = buildings[0].powerUpPosition;
-
-    if (_handPosition - 1 == _gemLocationAtIndexZero ||
-        _handPosition == _gemLocationAtIndexZero) {
-      if (_gemLocationAtIndexZero == 4 || _gemLocationAtIndexZero == 7) {
-        // soundModel.playFlapFlapFlap(_hearSoundEffects);
-        soundModel.playOtherSounds5x('1-21-23stab.mp3', _hearSoundEffects);
-        soundModel.playOtherSounds('1-21-23Lose8Bit.mp3', hearSoundEffects);
-
-        if (redGems.isEmpty && extraLives.isEmpty) {
-          // fireQuickScream();
-          soundModel.playOtherSounds('jumpScare.mp3', _hearSoundEffects);
-          // soundModel.playOtherThree(
-          //     'negativePowerupTwo.mp3', _hearSoundEffects);
-          fireQuickScreamWhenUserLosesALifeAndNotARedGemWhenStabbed();
-          // fireBloodSplatQuick();
-
-          print('user got stabbed and game over');
-
-          _crashed = true;
-          pauseGame();
-          notifyListeners();
-        } else if (redGems.isNotEmpty) {
-          fireQuickScreamWhenUserLosesALifeAndNotARedGemWhenStabbed();
-          // soundModel.playOtherThree(
-          //     'negativePowerupTwo.mp3', _hearSoundEffects);
-
-          redGems.removeAt(redGems.length - 1);
-          print('red gem stab protection - 1 red gem');
-          fireQuickKnifeDefense();
-
-          notifyListeners();
-        } else if (extraLives.isNotEmpty) {
-          fireQuickScreamWhenUserLosesALifeAndNotARedGemWhenStabbed();
-          // soundModel.playOtherFour('negativePowerupTwo.mp3', _hearSoundEffects);
-
-          extraLives.removeAt(extraLives.length - 1);
-          print(
-              'user got stabbed and had no red gems so lost a life but not a game over');
-
-          notifyListeners();
-        }
-      } else if (_gemLocationAtIndexZero == 5) {
-        // soundModel.playFlapFlapFlap(_hearSoundEffects);
-
-        soundModel.playComedySounds('horseNeigh.mp3', _hearSoundEffects);
-        turnOnAndOffSkullBackground();
-        soundModel.playOtherThree('negativePowerup.mp3', _hearSoundEffects);
-      } else if (_gemLocationAtIndexZero == 6) {
-        // soundModel.playFlapFlapFlap(_hearSoundEffects);
-
-        /// crystal ball!
-        /// show
-        fireCrystalBallTimeDecrease();
-        soundModel.playOtherSounds5x('crowdApplause.mp3', _hearSoundEffects);
-        soundModel.playOtherSounds5x('1-21-23Gingle8Bit.mp3', hearSoundEffects);
-      }
-    }
-  }
-
-  //// rather than speeding game up, slow it down?!?!?!?
-  /// the game speeds up when you hit a crystal ball
-  /// to make game play faster, decrease game speed
-
-  void fireCrystalBallTimeDecrease() {
-    _gameSpeed = _gameSpeed - 10000;
-    _reverseGameSpeedToDisplayForUserAsTheyProgress =
-        _reverseGameSpeedToDisplayForUserAsTheyProgress + 100;
-    // _score = _score + 50;
-    _shouldDisplayTimeIncrease = true;
-    fireDoublePointsEffects();
-    notifyListeners();
-    Future.delayed(Duration(milliseconds: 1200), () {
-      _shouldDisplayTimeIncrease = false;
-      notifyListeners();
-    });
-  }
-
-  void unloadHellFire() {
-    flames = [];
-    flamesSecond = [];
-    notifyListeners();
-  }
-
-  void reloadHellFire() {
-    _triedFiringWhenOutOfAmmo = false;
-    soundModel.playReloadSound(_hearSoundEffects);
-    soundModel.playOtherEight('sciFiReload.mp3', _hearSoundEffects);
-    soundModel.playOtherNine('shotgunReload.mp3', _hearSoundEffects);
-
-    _roundsInMagazine = 18;
-    flames = [
-      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
-      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
-      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
-      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
-      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
-      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
-      kblankIcon,
-    ];
-    flamesSecond = [
-      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
-      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
-      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
-      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
-      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
-      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
-      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
-      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
-      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
-      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
-      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
-      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
-      kblankIcon,
-    ];
-    _fullyLoaded = true;
-    notifyListeners();
-  }
-
-  void addFreshlyPickedUpIceCreamToGamePlayAreaForRotatingAnimation() {
-    _rotatingIceCreamPickups = [];
-    _rotatingIceCreamPickups.add(
-      Center(
-          child: Container(
-              height: 300.0,
-              width: 300.0,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  RotatingIcecreamBullet(
-                    path: '$_iceCreamBulletPath',
-                    height: 300.0,
-                    width: 300.0,
-                  ),
-                ],
-              ))),
-    );
-  }
-
   void contactWithPowerUpChecker() {
     int _gemLocationAtIndexZero = buildings[0].powerUpPosition;
 
@@ -1450,6 +1309,147 @@ class GameStatusProvider with ChangeNotifier {
         print('user caught a nuke');
       }
     }
+  }
+
+  /// negative power ups, knife, beast, time increase.
+  void checkForBadPowerUps() {
+    int _gemLocationAtIndexZero = buildings[0].powerUpPosition;
+
+    if (_handPosition - 1 == _gemLocationAtIndexZero ||
+        _handPosition == _gemLocationAtIndexZero) {
+      if (_gemLocationAtIndexZero == 4 || _gemLocationAtIndexZero == 7) {
+        // soundModel.playFlapFlapFlap(_hearSoundEffects);
+        soundModel.playOtherSounds5x('1-21-23stab.mp3', _hearSoundEffects);
+        soundModel.playOtherSounds('1-21-23Lose8Bit.mp3', hearSoundEffects);
+
+        if (redGems.isEmpty && extraLives.isEmpty) {
+          // fireQuickScream();
+          soundModel.playOtherSounds('jumpScare.mp3', _hearSoundEffects);
+          // soundModel.playOtherThree(
+          //     'negativePowerupTwo.mp3', _hearSoundEffects);
+          fireQuickScreamWhenUserLosesALifeAndNotARedGemWhenStabbed();
+          // fireBloodSplatQuick();
+
+          print('user got stabbed and game over');
+
+          _crashed = true;
+          pauseGame();
+          notifyListeners();
+        } else if (redGems.isNotEmpty) {
+          fireQuickScreamWhenUserLosesALifeAndNotARedGemWhenStabbed();
+          // soundModel.playOtherThree(
+          //     'negativePowerupTwo.mp3', _hearSoundEffects);
+
+          redGems.removeAt(redGems.length - 1);
+          print('red gem stab protection - 1 red gem');
+          fireQuickKnifeDefense();
+
+          notifyListeners();
+        } else if (extraLives.isNotEmpty) {
+          fireQuickScreamWhenUserLosesALifeAndNotARedGemWhenStabbed();
+          // soundModel.playOtherFour('negativePowerupTwo.mp3', _hearSoundEffects);
+
+          extraLives.removeAt(extraLives.length - 1);
+          print(
+              'user got stabbed and had no red gems so lost a life but not a game over');
+
+          notifyListeners();
+        }
+      } else if (_gemLocationAtIndexZero == 5) {
+        // soundModel.playFlapFlapFlap(_hearSoundEffects);
+
+        soundModel.playComedySounds('horseNeigh.mp3', _hearSoundEffects);
+        turnOnAndOffSkullBackground();
+        soundModel.playOtherThree('negativePowerup.mp3', _hearSoundEffects);
+      } else if (_gemLocationAtIndexZero == 6) {
+        // soundModel.playFlapFlapFlap(_hearSoundEffects);
+
+        /// crystal ball!
+        /// show
+        fireCrystalBallTimeDecrease();
+        soundModel.playOtherSounds5x('crowdApplause.mp3', _hearSoundEffects);
+        soundModel.playOtherSounds5x('1-21-23Gingle8Bit.mp3', hearSoundEffects);
+      }
+    }
+  }
+
+  //// rather than speeding game up, slow it down?!?!?!?
+  /// the game speeds up when you hit a crystal ball
+  /// to make game play faster, decrease game speed
+
+  void fireCrystalBallTimeDecrease() {
+    _gameSpeed = _gameSpeed - 10000;
+    _reverseGameSpeedToDisplayForUserAsTheyProgress =
+        _reverseGameSpeedToDisplayForUserAsTheyProgress + 100;
+    // _score = _score + 50;
+    _shouldDisplayTimeIncrease = true;
+    fireDoublePointsEffects();
+    notifyListeners();
+    Future.delayed(Duration(milliseconds: 1200), () {
+      _shouldDisplayTimeIncrease = false;
+      notifyListeners();
+    });
+  }
+
+  void unloadHellFire() {
+    flames = [];
+    flamesSecond = [];
+    notifyListeners();
+  }
+
+  void reloadHellFire() {
+    _triedFiringWhenOutOfAmmo = false;
+    soundModel.playReloadSound(_hearSoundEffects);
+    soundModel.playOtherEight('sciFiReload.mp3', _hearSoundEffects);
+    soundModel.playOtherNine('shotgunReload.mp3', _hearSoundEffects);
+
+    _roundsInMagazine = 18;
+    flames = [
+      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
+      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
+      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
+      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
+      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
+      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
+      kblankIcon,
+    ];
+    flamesSecond = [
+      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
+      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
+      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
+      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
+      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
+      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
+      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
+      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
+      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
+      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
+      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
+      IceCreamBulletForMagazine(iceCreamPath: _iceCreamBulletPathForMagazine),
+      kblankIcon,
+    ];
+    _fullyLoaded = true;
+    notifyListeners();
+  }
+
+  void addFreshlyPickedUpIceCreamToGamePlayAreaForRotatingAnimation() {
+    _rotatingIceCreamPickups = [];
+    _rotatingIceCreamPickups.add(
+      Center(
+          child: Container(
+              height: 300.0,
+              width: 300.0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RotatingIcecreamBullet(
+                    path: '$_iceCreamBulletPath',
+                    height: 300.0,
+                    width: 300.0,
+                  ),
+                ],
+              ))),
+    );
   }
 
   // bool _shieldIsActive = false;
