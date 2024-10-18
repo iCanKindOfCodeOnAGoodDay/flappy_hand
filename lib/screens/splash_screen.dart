@@ -8,9 +8,6 @@ import 'package:flappy_taco/widgets/rotating_barrier_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/sound_model.dart';
-import '../providers/premium_content_provider.dart';
-
 SoundModel soundModel = SoundModel();
 
 class SplashScreen extends StatefulWidget {
@@ -197,7 +194,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         image: DecorationImage(
                             fit: BoxFit.contain,
                             image: AssetImage(
-                              'images/koozyLogo.gif',
+                              'images/taylorSwiftCelebration.gif',
                               // 'images/IMG_6896_alien2.png',
                             ))),
                   ),
