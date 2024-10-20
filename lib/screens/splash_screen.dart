@@ -43,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
     /// send them to the game play screen
     /// TODO for now, send user straight to game play screen after a delay to display splash screen
     Timer flappyHandSoundsTimer = Timer(Duration(seconds: 5), () {
-      soundModel.playFlapFlapFlap(true);
+      soundModel.warningAlarm(true);
     });
     Timer transitionTimer = Timer(Duration(seconds: 3), () {
       context.read<GameStatusProvider>().fireExplosion1();

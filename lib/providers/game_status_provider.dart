@@ -279,6 +279,7 @@ class GameStatusProvider with ChangeNotifier {
 
   Timer gameSpeedTimer =
       Timer.periodic(Duration(microseconds: 150000), (timer) {});
+  // 1.5 seconds
 
   List<Widget> redGems = [];
 
@@ -400,8 +401,7 @@ class GameStatusProvider with ChangeNotifier {
           _amountOFBonusGemsEarnedViaGamePlay + 3;
       // notifyListeners();
     }
-//todo - determine if game speed var here is simply something displayed to user vs. meaningful to the speed of the game
-    //// 01.17.23 game speed was - 100 now its - 150 to account for crystal ball helping user
+
     /// was 150, reset it to 100 - game play was speeding up to fast
     _gameSpeed = _gameSpeed - 100;
     _reverseGameSpeedToDisplayForUserAsTheyProgress =
@@ -415,6 +415,9 @@ class GameStatusProvider with ChangeNotifier {
   void startGame() {
     // increaseSpeedEveryTenSeconds();
     _showADeadHand = false;
+
+    /// here we should probably cancel the previous timer if one exists
+    /// game was crashing at end... this may be why
     gameSpeedTimer =
         Timer.periodic(Duration(microseconds: _gameSpeed), (timer) {
       if (_crashed == false) {
@@ -464,21 +467,14 @@ class GameStatusProvider with ChangeNotifier {
             fireBloodSplatQuick();
             notifyListeners();
           } else if (extraLives.isEmpty == true) {
-            soundModel.playOtherSoundsTwo('manDeath.mp3', _hearSoundEffects);
-            soundModel.playOtherThree('splat.mp3', _hearSoundEffects);
-            soundModel.playOtherFour('deathCallsForMe.mp3', _hearSoundEffects);
-            soundModel.playOtherFive('fireworks.mp3', _hearSoundEffects);
-            soundModel.playOtherSix('bulletShot.mp3', _hearSoundEffects);
+            /// first thing that we should do is cancel the game speed timer
+            print('should play game over sounds - crashed in bottom');
+            soundModel.gameOver(hearSoundEffects);
             fireQuickHorror();
 
             _crashed = true;
             _showADeadHand = true;
-            // _isClimbing = true;
-            print('craashed = $_crashed');
-            print('game over bottom buildling');
-            print(obstacleHeight);
-            print(_handPosition);
-            print('now updating the UI');
+
             notifyListeners();
           }
         }
@@ -497,25 +493,15 @@ class GameStatusProvider with ChangeNotifier {
 
           /// one wiggle room for top buildlings
           else if (extraLives.isEmpty == true) {
+            /// this is when user dies by hitting a top building
             fireQuickHorror();
 
             _crashed = true;
             // _isClimbing = true;
             _showADeadHand = true;
-            soundModel.playOtherThree('manDeath.mp3', _hearSoundEffects);
-            soundModel.playOtherFour('splat.mp3', _hearSoundEffects);
-            soundModel.playOtherFive('deathCallsForMe.mp3', _hearSoundEffects);
-            soundModel.playOtherSix('fireworks.mp3', _hearSoundEffects);
-            // soundModel.playOtherSoundsTwo('bulletShot.mp3', _hearSoundEffects);
-            soundModel.playOtherSounds(
-                '1-21-23BurstRifle.mp3', hearSoundEffects);
+            print('should play game over sounds - crashed in top');
+            soundModel.gameOver(hearSoundEffects);
 
-            print('craashed = $_crashed');
-            print('game over top buildling');
-            print('buildling height: $obstacleHeight');
-            print('taco position ${_handPosition}');
-
-            print('now updating the UI');
             notifyListeners();
           }
         }
@@ -586,6 +572,7 @@ class GameStatusProvider with ChangeNotifier {
   /// was forced to pass in the value because the value couldnt be accesed outside of the sound model, even when sound model was turned into a provider
 
   void resetGame() {
+    /// what about canceling the game speed timer?
     _showADeadHand = false;
     _reverseGameSpeedToDisplayForUserAsTheyProgress = 100;
     _amountOfTimeUserHitDoublePoints = 1;
@@ -729,9 +716,7 @@ class GameStatusProvider with ChangeNotifier {
     if (_isPaused == false) {
       //// now every time the hand jumps resources will be disposed
       soundModel.playTapSound(_hearSoundEffects);
-      soundModel.playOtherSounds('wingsNewTwo.mp3', _hearSoundEffects);
-      // soundModel.playOtherSoundsTwo('sciFiChargeQuick.mp3');
-      // soundModel.playOtherSeven('bugSquash.mp3');
+      // soundModel.playOtherSounds('wingsNewTwo.mp3', _hearSoundEffects);
 
       /// when user taps, let the taco climb
       if (_handPosition <= 7) {
@@ -768,7 +753,6 @@ class GameStatusProvider with ChangeNotifier {
   void handDive() {
     if (_isPaused == false) {
       soundModel.playOtherSeven('sciFiDive.mp3', _hearSoundEffects);
-      // soundModel.playOtherThree('sciFiChargeQuick.mp3');
 
       /// when user taps, let the taco climb
       if (_handPosition <= 4) {
@@ -1121,9 +1105,7 @@ class GameStatusProvider with ChangeNotifier {
         _handPosition - 1 == _gemLocationAtIndexZero) {
       if (_gemLocationAtIndexZero == 3 || _gemLocationAtIndexZero == 2) {
         fireJustPickedUpCannon();
-        soundModel.playCannonUpgradeSound(_hearSoundEffects);
-        soundModel.playOtherThree('sciFiPowerupThree.mp3', _hearSoundEffects);
-        soundModel.playFlapFlapFlap(_hearSoundEffects);
+        soundModel.cannonPickup(hearSoundEffects);
 
         ///hell fire cannon
         if (_currentCannon == CannonType.orange) {
@@ -1241,18 +1223,8 @@ class GameStatusProvider with ChangeNotifier {
         updateZombiePath();
 
         ///extra life
-        // soundModel.playOtherSoundsTwo('arcadePickup.mp3');
-        // fireCoinWinEffect();
-        // soundModel.playOtherThree('arcadeAndApplause.mp3');
-        // soundModel.playOtherThree('bopBopBopDing.mp3');
-        soundModel.playOtherFour('powerupOne.mp3', _hearSoundEffects);
-        soundModel.playComedySounds(
-            'laughingYoungFemale.mp3', _hearSoundEffects);
         fireQuickLifePickup();
-        soundModel.playFlapFlapFlap(_hearSoundEffects);
-
-        // soundModel.playOtherSoundsTwo('sciFiPowerupThree.mp3');
-        // soundModel.playOtherFive('positivePowerupTwo.mp3');
+        soundModel.lifePickup(hearSoundEffects);
 
         /// give the user an extra life
         extraLives.add(kExtraLife);
@@ -1262,28 +1234,17 @@ class GameStatusProvider with ChangeNotifier {
         print('user got extra life');
       } else if (_gemLocationAtIndexZero == 10) {
         /// used to be 6 and 10, now lets just put this at 10, and 6 will be the speed up negative powerup
-        soundModel.playOtherFour('positivePowerupTwo.mp3', _hearSoundEffects);
-        soundModel.playFlapFlapFlap(_hearSoundEffects);
-
+        soundModel.bloodPickup(hearSoundEffects);
         fireQuickBandaidPickup();
         fireDoublePointsEffects();
-
         redGems.add(kBlood);
         notifyListeners();
 
         /// increase users red gem count
         print('user made contact with red gem');
       } else if (_gemLocationAtIndexZero == 1) {
-        // soundModel.playFlapFlapFlap(_hearSoundEffects);
-
-        ///empty buildings
         fireDoublePointsEffects();
-        // soundModel.playOtherThree('sciFiBitExplosion.mp3');
-        // soundModel.playComedySounds('savageHorse.mp3', _hearSoundEffects);
-        // soundModel.playOtherFour('sciFiBitExplosion.mp3');
-        // soundModel.playOtherFive('debrisShatter.mp3', _hearSoundEffects);
-        // soundModel.playOtherSoundsTwo('sciFiPowerupThree.mp3');
-        // soundModel.playOtherSounds5x('fuseSound.mp3');
+
         /// user caught a bomb blow up obstacles instantly
         blowUpBuildingsButNotPowerUps();
         soundModel.playOtherSounds5x('customExplosion.mp3', _hearSoundEffects);
@@ -1291,12 +1252,9 @@ class GameStatusProvider with ChangeNotifier {
         fireExplosion2();
         print('user caught a flashing gem');
       } else if (_gemLocationAtIndexZero == 8) {
-        // soundModel.playFlapFlapFlap(_hearSoundEffects);
-
+        /// TODO - condense these sounds
         soundModel.playOtherSounds('sizzlePop.mp3', _hearSoundEffects);
-        // soundModel.playOtherSix('bopBopBopDing.mp3');
         soundModel.playOtherSeven('sciFiPowerupThree.mp3', _hearSoundEffects);
-        // soundModel.playOtherSounds5x('timerTicking.mp3');
 
         ///empty buildings
         nukeList.add(
@@ -1318,15 +1276,11 @@ class GameStatusProvider with ChangeNotifier {
     if (_handPosition - 1 == _gemLocationAtIndexZero ||
         _handPosition == _gemLocationAtIndexZero) {
       if (_gemLocationAtIndexZero == 4 || _gemLocationAtIndexZero == 7) {
-        // soundModel.playFlapFlapFlap(_hearSoundEffects);
-        soundModel.playOtherSounds5x('1-21-23stab.mp3', _hearSoundEffects);
-        soundModel.playOtherSounds('1-21-23Lose8Bit.mp3', hearSoundEffects);
+        soundModel.knifePickup(hearSoundEffects);
 
         if (redGems.isEmpty && extraLives.isEmpty) {
-          // fireQuickScream();
           soundModel.playOtherSounds('jumpScare.mp3', _hearSoundEffects);
-          // soundModel.playOtherThree(
-          //     'negativePowerupTwo.mp3', _hearSoundEffects);
+
           fireQuickScreamWhenUserLosesALifeAndNotARedGemWhenStabbed();
           // fireBloodSplatQuick();
 
@@ -1337,8 +1291,6 @@ class GameStatusProvider with ChangeNotifier {
           notifyListeners();
         } else if (redGems.isNotEmpty) {
           fireQuickScreamWhenUserLosesALifeAndNotARedGemWhenStabbed();
-          // soundModel.playOtherThree(
-          //     'negativePowerupTwo.mp3', _hearSoundEffects);
 
           redGems.removeAt(redGems.length - 1);
           print('red gem stab protection - 1 red gem');
@@ -1356,19 +1308,14 @@ class GameStatusProvider with ChangeNotifier {
           notifyListeners();
         }
       } else if (_gemLocationAtIndexZero == 5) {
-        // soundModel.playFlapFlapFlap(_hearSoundEffects);
-
-        soundModel.playComedySounds('horseNeigh.mp3', _hearSoundEffects);
         turnOnAndOffSkullBackground();
-        soundModel.playOtherThree('negativePowerup.mp3', _hearSoundEffects);
-      } else if (_gemLocationAtIndexZero == 6) {
-        // soundModel.playFlapFlapFlap(_hearSoundEffects);
 
+        soundModel.horsePickup(hearSoundEffects);
+      } else if (_gemLocationAtIndexZero == 6) {
         /// crystal ball!
         /// show
         fireCrystalBallTimeDecrease();
-        soundModel.playOtherSounds5x('crowdApplause.mp3', _hearSoundEffects);
-        soundModel.playOtherSounds5x('1-21-23Gingle8Bit.mp3', hearSoundEffects);
+        soundModel.crystalPickup(hearSoundEffects);
       }
     }
   }
@@ -1400,8 +1347,6 @@ class GameStatusProvider with ChangeNotifier {
   void reloadHellFire() {
     _triedFiringWhenOutOfAmmo = false;
     soundModel.playReloadSound(_hearSoundEffects);
-    soundModel.playOtherEight('sciFiReload.mp3', _hearSoundEffects);
-    soundModel.playOtherNine('shotgunReload.mp3', _hearSoundEffects);
 
     _roundsInMagazine = 18;
     flames = [
@@ -1477,9 +1422,7 @@ class GameStatusProvider with ChangeNotifier {
     notifyListeners();
     if (_gemPosition == 4 || _gemPosition == 7) {
       _trackGemType = 'knife'.toUpperCase();
-      soundModel.playOtherEight('jumpScare.mp3', _hearSoundEffects);
-      // soundModel.playOtherSounds5x('knifeSharpening.mp3');
-      soundModel.playOtherSounds5x('knifeScrapeGoreTwo.mp3', _hearSoundEffects);
+      soundModel.knifeScrape(hearSoundEffects);
 
       print('gem type $_trackGemType');
       notifyListeners();

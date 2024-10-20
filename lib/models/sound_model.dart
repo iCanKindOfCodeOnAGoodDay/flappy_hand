@@ -1,11 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:flappy_taco/providers/game_status_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:provider/provider.dart';
-
-import '../providers/game_status_provider.dart';
 
 class SoundModel {
   // bool hearSoundEffects = false;
@@ -24,6 +17,144 @@ class SoundModel {
   //   print('hearSoundEffects = $_hearSoundEffects');
   // }
 
+  final spookyMusicPlayer = AudioPlayer();
+  final loopSizzleSoundPlayer = AudioPlayer();
+  final loopElectricChairPlayer = AudioPlayer();
+  final loopFireworksSoundsPlayer = AudioPlayer();
+
+  void gameOver(bool hearSoundEffects) async {
+    if (hearSoundEffects == true) {
+      final audioPlayer = AudioPlayer();
+      await audioPlayer.setVolume(3.0);
+
+      await audioPlayer.setAsset('assets/play_my_damn_game_over_sounds.mp3');
+      await audioPlayer.play();
+      await audioPlayer.stop();
+
+      await audioPlayer.dispose();
+    }
+  }
+
+  void cannonPickup(bool hearSoundEffects) async {
+    if (hearSoundEffects == true) {
+      final audioPlayer = AudioPlayer();
+      await audioPlayer.setVolume(3.0);
+
+      await audioPlayer.setAsset('assets/10-19-24_cannon_pickup.mp3');
+      await audioPlayer.play();
+      await audioPlayer.stop();
+
+      await audioPlayer.dispose();
+    }
+  }
+
+  void lifePickup(bool hearSoundEffects) async {
+    if (hearSoundEffects == true) {
+      final audioPlayer = AudioPlayer();
+      await audioPlayer.setVolume(3.0);
+
+      await audioPlayer.setAsset('assets/10-19-24_life_pickup.mp3');
+      await audioPlayer.play();
+      await audioPlayer.stop();
+
+      await audioPlayer.dispose();
+    }
+  }
+
+  void bloodPickup(bool hearSoundEffects) async {
+    if (hearSoundEffects == true) {
+      final audioPlayer = AudioPlayer();
+      await audioPlayer.setVolume(3.0);
+
+      await audioPlayer.setAsset('assets/10-19-24_blood_pickup.mp3');
+      await audioPlayer.play();
+      await audioPlayer.stop();
+
+      await audioPlayer.dispose();
+    }
+  }
+
+  void knifePickup(bool hearSoundEffects) async {
+    if (hearSoundEffects == true) {
+      final audioPlayer = AudioPlayer();
+      await audioPlayer.setVolume(3.0);
+
+      await audioPlayer.setAsset('assets/10-19-24_stab_contact.mp3');
+      await audioPlayer.play();
+      await audioPlayer.stop();
+
+      await audioPlayer.dispose();
+    }
+  }
+
+  void horsePickup(bool hearSoundEffects) async {
+    if (hearSoundEffects == true) {
+      final audioPlayer = AudioPlayer();
+      await audioPlayer.setVolume(3.0);
+
+      await audioPlayer.setAsset('assets/10-19-24_horse_contact.mp3');
+      await audioPlayer.play();
+      await audioPlayer.stop();
+
+      await audioPlayer.dispose();
+    }
+  }
+
+  void crystalPickup(bool hearSoundEffects) async {
+    if (hearSoundEffects == true) {
+      final audioPlayer = AudioPlayer();
+      await audioPlayer.setVolume(3.0);
+
+      await audioPlayer.setAsset('assets/10-19-24_crystal_contact.mp3');
+      await audioPlayer.play();
+      await audioPlayer.stop();
+
+      await audioPlayer.dispose();
+    }
+  }
+
+  void knifeScrape(bool hearSoundEffects) async {
+    if (hearSoundEffects == true) {
+      final audioPlayer = AudioPlayer();
+      await audioPlayer.setVolume(3.0);
+
+      await audioPlayer.setAsset('assets/10-19-24_knife_scrape_scare.mp3');
+      await audioPlayer.play();
+      await audioPlayer.stop();
+
+      await audioPlayer.dispose();
+    }
+  }
+
+  void tripleKill(bool hearSoundEffects) async {
+    if (hearSoundEffects == true) {
+      final audioPlayer = AudioPlayer();
+      await audioPlayer.setVolume(3.0);
+
+      await audioPlayer.setAsset('assets/10-19-24_triple_kill_effect.mp3');
+      await audioPlayer.play();
+      await audioPlayer.stop();
+
+      await audioPlayer.dispose();
+    }
+  }
+
+  void playReloadSound(bool hearSoundEffects) async {
+    if (hearSoundEffects == true) {
+      print('requesting reload sound to play');
+
+      final reloadPlayer = AudioPlayer();
+
+      await reloadPlayer.setAsset('assets/shotgunReload.mp3');
+      await reloadPlayer.play();
+      await reloadPlayer.stop();
+
+      await reloadPlayer.dispose();
+    }
+  }
+
+  /// old sound players below - some still in use
+
   void playReloadMaleVoice(bool hearSoundEffects) async {
     if (hearSoundEffects == true) {
       final reloadVoicePlayer = AudioPlayer();
@@ -33,8 +164,6 @@ class SoundModel {
       await reloadVoicePlayer.dispose();
     }
   }
-
-  final spookyMusicPlayer = AudioPlayer();
 
   void killSpookyMusic() async {
     await spookyMusicPlayer.play();
@@ -60,8 +189,6 @@ class SoundModel {
       await spookyMusicPlayer.dispose();
     }
   }
-
-  final loopSizzleSoundPlayer = AudioPlayer();
 
   void killLoopSizzleSound() async {
     loopSizzleSoundPlayer.play();
@@ -97,8 +224,6 @@ class SoundModel {
   //   }
   // }
 
-  final loopElectricChairPlayer = AudioPlayer();
-
   void killLoopElectricChair() async {
     loopElectricChairPlayer.play();
     loopElectricChairPlayer.stop();
@@ -119,8 +244,6 @@ class SoundModel {
       await loopElectricChairPlayer.dispose();
     }
   }
-
-  final loopFireworksSoundsPlayer = AudioPlayer();
 
   void killLoopFireworksSoundsPlayer() async {
     loopFireworksSoundsPlayer.play();
@@ -396,7 +519,7 @@ class SoundModel {
     }
   }
 
-  void playFlapFlapFlap(bool hearSoundEffects) async {
+  void warningAlarm(bool hearSoundEffects) async {
     if (hearSoundEffects == true) {
       final audioPlayer = AudioPlayer();
       await audioPlayer.setVolume(2.0);
@@ -430,39 +553,6 @@ class SoundModel {
       await fallingSoundPlayer.dispose();
     }
   }
-
-  // void disposeMusicSoundPawait player.stop();
-  // Stop an
-  // d free resourceslayer() async {
-  //   musicPlayer.dispose();
-  // }
-
-  /// reload sound
-
-  void playReloadSound(bool hearSoundEffects) async {
-    print('code prior to if statement');
-    print('sound effects = $hearSoundEffects');
-
-    if (hearSoundEffects == true) {
-      print('requesting reload sound to play');
-
-      final reloadPlayer = AudioPlayer();
-
-      await reloadPlayer.setAsset('assets/laserReload.mp3');
-      await reloadPlayer.play();
-      await reloadPlayer.stop();
-
-      await reloadPlayer.dispose();
-    }
-  }
-  //
-  // void disposeReloadSoundPawait player.stop();
-  // Stop an
-  // d free resourceslayer() async {
-  //   reloadPlayer.dispose();
-  // }
-
-  // laser shot player
 
   void playLaserSound(bool hearSoundEffects) async {
     if (hearSoundEffects == true) {
