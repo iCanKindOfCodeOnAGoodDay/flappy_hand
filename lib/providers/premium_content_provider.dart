@@ -39,15 +39,24 @@ class PremiumContentProvider with ChangeNotifier {
   // levelUpStatic.gif
   // levelUpSword.gif
   // levelUpSwordRed.gif
-  String _pathToSelectedBackgroundImage = 'horror41.JPG';
+  // String _pathToSelectedBackgroundImage = 'black.png';
+
+  String _pathToSelectedBackgroundImage = 'hhWarp3.GIF';
+
+  // String _pathToSelectedBackgroundImage = 'horror41.JPG';
   String get pathToSelectedBackgroundImage => _pathToSelectedBackgroundImage;
-  String _pathToPreviousBackgroundImage = 'horror41.JPG';
+  String _pathToPreviousBackgroundImage = 'warpSpeedBlack.gif';
+
   String get pathToPreviousBackgroundImage => _pathToPreviousBackgroundImage;
   int _backgroundIndex = 0;
   bool _activatedFloppyFace = false;
   bool get activatedFloppyFace => _activatedFloppyFace;
   int indexToIterateThroughFloppyFaceList = 0;
-  String _pathToSelectedWalkingHand = 'thingStichedWalkingXX.gif';
+
+  /// interesting, when we change the hand below to trump, it only last a little while then becomes thing again
+  String _pathToSelectedWalkingHand = 'trumpHeadxx1-22-23.gif';
+
+  // String _pathToSelectedWalkingHand = 'thingStichedWalkingXX.gif';
   String get pathToSelectedWalkingHand => _pathToSelectedWalkingHand;
   String _pathToSelectedDeadHand = 'thingRightTraced.png';
   String get pathToSelectedDeadHand => _pathToSelectedDeadHand;
@@ -105,7 +114,9 @@ class PremiumContentProvider with ChangeNotifier {
   String get pathToNewItemFromChest => _pathToNewItemFromChest;
   int _amountOfRubiesReadyToUse = 1985;
   int get amountOfRubiesReadyToUse => _amountOfRubiesReadyToUse;
-  String _pathToSelectedKnife = 'switchBladeBloody.gif';
+  String _pathToSelectedKnife = 'kimJongRocketRiding.gif';
+
+  // String _pathToSelectedKnife = 'switchBladeBloody.gif';
   String get pathToSelectedKnife => _pathToSelectedKnife;
   // String _pathToSelectedGameConsole = '12dotSquashSuperDevice.gif';
   String _pathToSelectedBeast = 'horseTransparent.gif';
@@ -584,9 +595,12 @@ class PremiumContentProvider with ChangeNotifier {
     updatePathToHandColor(HandColors.regular);
   }
 
+  /// looks like this func might be getting called during gameplay perhaps on a level up or a double points
   void updatePathToHandColor(HandColors color) {
     if (color == HandColors.regular) {
-      _pathToSelectedWalkingHand = 'thingStichedWalkingXX.gif';
+      _pathToSelectedWalkingHand = 'trumpHeadxx1-22-23.gif';
+
+      // _pathToSelectedWalkingHand = 'thingStichedWalkingXX.gif';
       _pathToSelectedDeadHand = 'thingRightTraced.png';
       notifyListeners();
     }

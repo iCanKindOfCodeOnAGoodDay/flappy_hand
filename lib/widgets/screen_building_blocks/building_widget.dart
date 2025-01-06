@@ -55,7 +55,9 @@ class BuildingWidget extends StatelessWidget {
                         )
                       : kblankIcon,
                   powerUpPosition == 7 ? SelectedKnifeWidget() : kblankIcon,
-                  powerUpPosition == 6 ? SelectedRocketWidget() : kblankIcon,
+                  powerUpPosition == 6
+                      ? SelectedCrystalBallWidget()
+                      : kblankIcon,
                   powerUpPosition == 5 ? SelectedBeastWidget() : kblankIcon,
                   powerUpPosition == 4 ? SelectedKnifeWidget() : kblankIcon,
                   powerUpPosition == 3
@@ -72,6 +74,8 @@ class BuildingWidget extends StatelessWidget {
                           path:
                               '${context.watch<GameStatusProvider>().nextIceCreamBulletPath}')
                       : kblankIcon,
+
+                  /// todo - the nuke is the only premium pickup that is not changeable in the 'premium' provider
                   powerUpPosition == 1 ? kNuke : kblankIcon,
                   // DevelopmentBlock(color: kBlankColor),
                 ],

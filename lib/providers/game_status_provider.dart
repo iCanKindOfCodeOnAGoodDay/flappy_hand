@@ -146,8 +146,8 @@ class GameStatusProvider with ChangeNotifier {
   int get ammunition => _ammunition;
   bool _fullyLoaded = true;
   bool get fullyLoaded => _fullyLoaded;
-  bool _showSkullBackground = false;
-  bool get showSkullBackground => _showSkullBackground;
+  bool _showBeastBackground = false;
+  bool get showSkullBackground => _showBeastBackground;
   bool _shouldDisplayTimeIncrease = false;
   bool get shouldDisplayTimeIncrease => _shouldDisplayTimeIncrease;
   List<Widget> get cannons => _cannons;
@@ -556,6 +556,7 @@ class GameStatusProvider with ChangeNotifier {
     }
   }
 
+  /// this is for the effect on screen when a life is picked up a hand comes from the bottom of the screen like a zombie reaching oout of a grave when it comes back alive
   void updateZombiePath() {
     if (_iterateThroughZombieHandList <
         _zombieHandsForOnScreenEffectWhenUserGrabsExtraLife.length - 1) {
@@ -568,8 +569,6 @@ class GameStatusProvider with ChangeNotifier {
             _iterateThroughZombieHandList];
     notifyListeners();
   }
-
-  /// was forced to pass in the value because the value couldnt be accesed outside of the sound model, even when sound model was turned into a provider
 
   void resetGame() {
     /// what about canceling the game speed timer?
@@ -908,6 +907,7 @@ class GameStatusProvider with ChangeNotifier {
   }
 
   void fireDoublePointsEffects() {
+    /// todo - better to combine all of the sounds
     soundModel.playOtherThree('arcadeAndApplause.mp3', _hearSoundEffects);
     // _score = _score + 50;
     updateGameBoyOpacity();
@@ -987,8 +987,6 @@ class GameStatusProvider with ChangeNotifier {
   }
 
   void fireQuickLifePickup() {
-    soundModel.playOtherSounds5x('1-21-23Gingle8Bit.mp3', hearSoundEffects);
-
     // _score = _score + 50;
     _shouldDisplayQuickLifePickup = true;
     notifyListeners();
@@ -999,7 +997,6 @@ class GameStatusProvider with ChangeNotifier {
   }
 
   void fireQuickBandaidPickup() {
-    soundModel.playOtherSounds5x('1-21-23Gingle8Bit.mp3', hearSoundEffects);
     // _score = _score + 50;
     _shouldDisplayBandaidPickup = true;
     notifyListeners();
@@ -1088,11 +1085,11 @@ class GameStatusProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void turnOnAndOffSkullBackground() {
-    _showSkullBackground = true;
+  void turnOnAndOffBeastBackground() {
+    _showBeastBackground = true;
     notifyListeners();
     Future.delayed(Duration(milliseconds: 1200), () {
-      _showSkullBackground = false;
+      _showBeastBackground = false;
       notifyListeners();
     });
   }
@@ -1224,7 +1221,12 @@ class GameStatusProvider with ChangeNotifier {
 
         ///extra life
         fireQuickLifePickup();
+
+        /// todo - this sound is not playing
         soundModel.lifePickup(hearSoundEffects);
+
+        // however, this sound was playing ... it was being called from the fireQuickLifePickup()
+        soundModel.playOtherSounds5x('1-21-23Gingle8Bit.mp3', hearSoundEffects);
 
         /// give the user an extra life
         extraLives.add(kExtraLife);
@@ -1234,7 +1236,11 @@ class GameStatusProvider with ChangeNotifier {
         print('user got extra life');
       } else if (_gemLocationAtIndexZero == 10) {
         /// used to be 6 and 10, now lets just put this at 10, and 6 will be the speed up negative powerup
+
         soundModel.bloodPickup(hearSoundEffects);
+
+        /// this fire func used to call to play this sound
+        soundModel.playOtherSounds5x('1-21-23Gingle8Bit.mp3', hearSoundEffects);
         fireQuickBandaidPickup();
         fireDoublePointsEffects();
         redGems.add(kBlood);
@@ -1308,7 +1314,7 @@ class GameStatusProvider with ChangeNotifier {
           notifyListeners();
         }
       } else if (_gemLocationAtIndexZero == 5) {
-        turnOnAndOffSkullBackground();
+        turnOnAndOffBeastBackground();
 
         soundModel.horsePickup(hearSoundEffects);
       } else if (_gemLocationAtIndexZero == 6) {

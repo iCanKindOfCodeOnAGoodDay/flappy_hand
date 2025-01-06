@@ -15,7 +15,9 @@ class DynamicCoin extends StatelessWidget {
             decoration: BoxDecoration(
                 image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: AssetImage('images/pendantNew14Colors.gif'))),
+                    image: AssetImage('images/kimBoom.gif'))),
+
+            // image: AssetImage('images/pendantNew14Colors.gif'))),
           )
         : context.watch<GameStatusProvider>().score <= 500
             ? Container(
@@ -24,7 +26,11 @@ class DynamicCoin extends StatelessWidget {
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: AssetImage('images/pendant.png'))),
+                        image: AssetImage('images/kimBoom.gif'))),
+
+                // image: AssetImage('images/kimHeadShot2.png'))),
+
+                // image: AssetImage('images/pendant.png'))),
 
                 // image: AssetImage('images/pendantNew14Colors.gif'))),
               )

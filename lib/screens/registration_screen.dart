@@ -7,7 +7,7 @@ class RegistrationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      // backgroundColor: Colors.black,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -21,7 +21,7 @@ class RegistrationScreen extends StatelessWidget {
               // width: 300,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('images/mileySnoopNicholasCage.gif'))),
+                      image: AssetImage('images/gameOver.GIF'))),
             ),
           ),
           SizedBox(
@@ -46,7 +46,7 @@ class RegistrationScreen extends StatelessWidget {
             children: [
               Text(
                 'email',
-                style: TextStyle(color: Colors.white),
+                // style: TextStyle(color: Colors.white),
               ),
             ],
           ),
@@ -55,7 +55,7 @@ class RegistrationScreen extends StatelessWidget {
             children: [
               Text(
                 'password',
-                style: TextStyle(color: Colors.white),
+                // style: TextStyle(color: Colors.white),
               ),
             ],
           ),
@@ -67,7 +67,7 @@ class RegistrationScreen extends StatelessWidget {
             },
             child: Container(
               height: 100,
-              color: Colors.red,
+              color: Colors.black,
               child: Center(
                 child: Text(
                   'login',

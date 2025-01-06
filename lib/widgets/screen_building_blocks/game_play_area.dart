@@ -55,8 +55,8 @@ class GamePlayAreaWidget extends StatelessWidget {
                               true
                           ? AssetImage(
                               // 'images/IMG_7147_alien.GIF',
-                              // 'images/hhWarp3.GIF',
-                              'images/warpSpeedBlack.gif',
+                              'images/ooooSharpBlackSpaceBright.gif',
+                              // 'images/warpSpeedBlack.gif',
                               // 'images/crystalBallLargeScreen.gif',
                             )
                           : context
@@ -210,7 +210,7 @@ class GamePlayAreaWidget extends StatelessWidget {
                                       fit: BoxFit.cover,
                                       image: AssetImage(
                                         // 'images/IMG_7151_monsters.GIF',
-                                        'images/katyPerryRidingHorse.gif',
+                                        'images/zendyaFour.GIF',
                                         // 'images/mmZombieChargeInvertRed.gif',
                                       )))
                               : BoxDecoration(),

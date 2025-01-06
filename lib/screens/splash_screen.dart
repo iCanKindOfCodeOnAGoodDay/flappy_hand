@@ -194,7 +194,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         image: DecorationImage(
                             fit: BoxFit.contain,
                             image: AssetImage(
-                              'images/taylorSwiftCelebration.gif',
+                              'images/gameOver.GIF',
                               // 'images/IMG_6896_alien2.png',
                             ))),
                   ),

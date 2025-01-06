@@ -27,7 +27,7 @@ class SoundModel {
       final audioPlayer = AudioPlayer();
       await audioPlayer.setVolume(3.0);
 
-      await audioPlayer.setAsset('assets/play_my_damn_game_over_sounds.mp3');
+      await audioPlayer.setAsset('assets/game_over_short.mp3');
       await audioPlayer.play();
       await audioPlayer.stop();
 
@@ -53,7 +53,7 @@ class SoundModel {
       final audioPlayer = AudioPlayer();
       await audioPlayer.setVolume(3.0);
 
-      await audioPlayer.setAsset('assets/10-19-24_life_pickup.mp3');
+      await audioPlayer.setAsset('assets/life_pickup_short.mp3');
       await audioPlayer.play();
       await audioPlayer.stop();
 
