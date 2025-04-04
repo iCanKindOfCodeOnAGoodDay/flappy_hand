@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dotsquash.flappy_taco">
    <application
-        android:label="flappy_taco"
+        android:label="Flappy Hand"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

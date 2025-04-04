@@ -471,6 +471,7 @@ Hero kFlameFace = Hero(
   ),
 );
 
+/// todo lest try to element this for in usage and hardcode the file name not in constants
 Hero kExtraLife = Hero(
   tag: 'thing',
   child: Container(
@@ -479,10 +480,8 @@ Hero kExtraLife = Hero(
     decoration: BoxDecoration(
       image: DecorationImage(
         fit: BoxFit.cover,
-        image: AssetImage(
-          'images/thingWalkingStichedXXLeft.gif',
-          // 'images/img-monsterHand2-16-23.png',
-        ),
+        image: AssetImage('images/thingWalkingStichedXXLeft.gif'),
+        // 'images/astronaut2.GIF,'),
       ),
     ),
   ),
@@ -515,7 +514,8 @@ Container kNuke = Container(
   width: 40.0,
   decoration: BoxDecoration(
       image: DecorationImage(
-          fit: BoxFit.cover, image: AssetImage('images/timeBomb4.png'))),
+          fit: BoxFit.cover,
+          image: AssetImage('images/pickup_death_star.GIF'))),
 );
 
 Container kSkullPatch = Container(

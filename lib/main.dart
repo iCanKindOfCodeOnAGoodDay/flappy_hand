@@ -1,6 +1,7 @@
-import 'package:flappy_taco/providers/game_status_provider.dart';
-import 'package:flappy_taco/providers/premium_content_provider.dart';
-import 'package:flappy_taco/screens/registration_screen.dart';
+import 'package:flappy_taco/providers/game_data.dart';
+import 'package:flappy_taco/providers/game_engine.dart';
+import 'package:flappy_taco/providers/settings_data.dart';
+import 'package:flappy_taco/screens/auth/auth_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -10,8 +11,15 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (_) => GameStatusProvider()),
-    ChangeNotifierProvider(create: (_) => PremiumContentProvider()),
+    ChangeNotifierProvider(create: (_) => GamePlayVariableDataProvider()),
+    ChangeNotifierProvider(create: (_) => SettingsDataProvider()),
+    ChangeNotifierProvider(create: (_) => GameEngine()),
+    ChangeNotifierProxyProvider2<GamePlayVariableDataProvider,
+        SettingsDataProvider, GameEngine>(
+      create: (_) => GameEngine(),
+      update: (_, gameData, settings, gameEngine) =>
+          gameEngine!..updateDependencies(gameData, settings),
+    ),
   ], child: MyApp()));
 }
 
