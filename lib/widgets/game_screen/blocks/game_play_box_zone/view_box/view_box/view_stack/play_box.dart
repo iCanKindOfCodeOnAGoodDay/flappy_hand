@@ -1,18 +1,22 @@
 import 'package:flappy_taco/providers/settings_data.dart';
-import 'package:flappy_taco/widgets/game_screen/game_screen_drawers/chest_drawer_view/chest/prize_reveal_animated.dart';
+import 'package:flappy_taco/widgets/game_screen/blocks/game_play_box_zone/view_box/view_box/view_stack/play_box_top_bottom_numbers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../../../enums/screen_effect_type.dart';
 import '../../../../../../../models/screen_effect.dart';
 import '../../../../../../../providers/game_engine.dart';
 import '../../../../../effects/combo_hits.dart';
+import '../../../../../game_screen_drawers/chest_drawer_view/chest/prize_reveal_animated.dart';
 
 /*
 
 Device Screen Stack:
 
-Row of buildings creating motion.
-Columns of effects, including the player movement.
+Stack of positioned widgets mostly create the stack.
+Powered by Game Engine.
+Rendering of game events based on user input.
+Player view area of the game -- Like a gameBoy Screen.
 
  */
 
@@ -29,18 +33,20 @@ class PlayBoxOfRetroDevice extends StatelessWidget {
           return Positioned(
             left: pickup.x,
             top: pickup.y,
-            width: 30,
-            height: 30,
+            width: 50,
+            height: 50,
             child: Image.asset(pickup.imagePath),
           );
         }).toList(),
       );
     }
 
+    String zombiePath = 'images/Cute_Alien_Knife.png';
+
     Stack towerOfZombiesBottom(double bottomY, double bottomH) {
       double heightToFill = bottomH + watchGameEngine.birdSize;
-      int numZombies = heightToFill ~/ 40;
-      double leftover = heightToFill % 40;
+      int numZombies = heightToFill ~/ 50;
+      double leftover = heightToFill % 50;
 
       List<Widget> zombies = [];
       if (leftover > 10) {
@@ -48,19 +54,17 @@ class PlayBoxOfRetroDevice extends StatelessWidget {
           Container(
             // color: Colors.black,
             height: leftover,
-            width: 40,
-            child: Image.asset('images/alien_head_ufo_giphy.gif',
-                fit: BoxFit.contain),
+            width: 50,
+            child: Image.asset(zombiePath, fit: BoxFit.contain),
           ),
         );
       }
       for (int i = 0; i < numZombies; i++) {
         zombies.add(Container(
           // color: Colors.red.withOpacity(0.3),
-          height: 40,
-          width: 40,
-          child: Image.asset('images/alien_head_ufo_giphy.gif',
-              fit: BoxFit.contain),
+          height: 50,
+          width: 50,
+          child: Image.asset(zombiePath, fit: BoxFit.contain),
         ));
       }
 
@@ -79,26 +83,24 @@ class PlayBoxOfRetroDevice extends StatelessWidget {
 
     Stack towerOfZombiesTop(double topHeight) {
       double heightToFill = topHeight;
-      int numZombies = heightToFill ~/ 40;
-      double leftover = heightToFill % 40;
+      int numZombies = heightToFill ~/ 50;
+      double leftover = heightToFill % 50;
 
       List<Widget> zombies = List.generate(numZombies, (_) {
         return Container(
-          height: 40,
-          width: 40,
+          height: 50,
+          width: 50,
           // color: Colors.red.withOpacity(0.3), // see how small it actually is
 
-          child: Image.asset('images/alien_head_ufo_giphy.gif',
-              fit: BoxFit.contain),
+          child: Image.asset(zombiePath, fit: BoxFit.contain),
         );
       });
 
       if (leftover > 20) {
         zombies.add(SizedBox(
           height: leftover,
-          width: 40,
-          child: Image.asset('images/alien_head_ufo_giphy.gif',
-              fit: BoxFit.contain),
+          width: 50,
+          child: Image.asset(zombiePath, fit: BoxFit.contain),
         ));
       }
 
@@ -189,34 +191,32 @@ class PlayBoxOfRetroDevice extends StatelessWidget {
 
       return Stack(
         children: List.generate(2, (index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: Stack(
-              children: [
-                Positioned(
-                  left: gameEngine.backgroundImageX[index],
-                  top: 0,
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: AssetImage(
-                            gameEngine.gameOver
-                                ? 'images/gameOver.GIF'
-                                : 'images/purpleStarsFreePicBlack.jpg',
-                          ),
+          return Stack(
+            children: [
+              Positioned(
+                left: gameEngine.backgroundImageX[index],
+                top: 0,
+                width: MediaQuery.of(context).size.width,
+                height: 500,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 20.0, horizontal: 20),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage(
+                          gameEngine.gameOver
+                              ? 'images/gameOver.GIF'
+                              : 'images/cave_adobe.png',
                         ),
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           );
         }),
       );
@@ -238,7 +238,8 @@ class PlayBoxOfRetroDevice extends StatelessWidget {
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 fit: BoxFit.fill,
-                                image: AssetImage('images/deadHand.gif'))),
+                                image: AssetImage(
+                                    'images/black_blood_player_death_effect.gif'))),
                       ),
                 Container(
                   decoration: BoxDecoration(
@@ -249,11 +250,11 @@ class PlayBoxOfRetroDevice extends StatelessWidget {
                               ? AssetImage(
                                   'images/${context.read<SettingsDataProvider>().gunPath}')
                               : AssetImage(
-                                  'images/${context.read<SettingsDataProvider>().pathToSelectedWalkingHand}'))),
+                                  'images/${context.read<SettingsDataProvider>().pathSelectedPlayer}'))),
                   width: context.read<GameEngine>().displayGunShot
                       ? 70
-                      : 70, // keep getting killed by this line - landing on bottom tower because it looks like im further forward
-                  height: 50,
+                      : 70, // keep getting killed by this linRe - landing on bottom tower because it looks like im further forward
+                  height: 70,
                 ),
               ],
             ),
@@ -276,55 +277,50 @@ THIS IS THE BUILD WIDGET FOR THE PLAY BOX
             width: 500,
             decoration: BoxDecoration(
               image: DecorationImage(
+                  // invertColors: true,
                   fit: BoxFit.fill,
                   image: AssetImage('images/scifi_arcade_black_screen_2.png')),
             ),
-            // child: Column(
-            //   mainAxisAlignment: MainAxisAlignment.end,
-            //   children: [
-            //     ValueListenableBuilder<int>(
-            //       valueListenable: context.watch<GameEngine>().currentStep,
-            //       builder: (context, step, _) {
-            //         return StepProgressIndicator(
-            //           totalSteps: 20,
-            //           currentStep: step,
-            //           size: 20,
-            //           selectedColor: Colors.redAccent,
-            //           unselectedColor: Colors.black,
-            //           gradientColor: LinearGradient(
-            //             begin: Alignment.topLeft,
-            //             end: Alignment.bottomRight,
-            //             colors: [Colors.grey, Colors.white],
-            //           ),
-            //         );
-            //       },
-            //     ),
-            //   ],
-            // ),
           ),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Stack(
-              /// this stack used to be child of DynamicBackgroundPlayBox
-
               children: [
-                //space background
-                Stack(
-                  children: [
-                    backgroundImageAnimation(),
-                    context.read<GameEngine>().gameOver == true
-                        ? Container(
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    opacity: 0.8,
-                                    fit: BoxFit.fill,
-                                    image: AssetImage(
-                                        'images/blood2LightGreen.gif'))),
-                          )
-                        : Container()
-                  ],
+                /// effect
+                /// not planning on using the background image animatino -- for now - and will prob update it to be a smaller effect
+                // Stack(
+                //   children: [
+                //     backgroundImageAnimation(),
+                //     context.read<GameEngine>().gameOver == true
+                //         ? Container(
+                //             decoration: BoxDecoration(
+                //                 image: DecorationImage(
+                //                     opacity: 0.9,
+                //                     fit: BoxFit.fill,
+                //                     image:
+                //                         AssetImage('images/blood2Black2.gif'))),
+                //           )
+                //         : Container()
+                //   ],
+                // ),
+
+                /// new red background image
+                Container(
+                  height: 400,
+                  width: 400,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          // invertColors: true,
+                          // colorFilter: ColorFilter.mode(
+                          //   Colors.grey.shade900,
+                          //   BlendMode.modulate,
+                          // ),
+                          fit: BoxFit.fill,
+                          image:
+                              AssetImage('images/red_black_alien_planet.png'))),
                 ),
 
+                /// PickupEffects
                 ValueListenableBuilder<List<ScreenEffect>>(
                   valueListenable:
                       context.watch<GameEngine>().activeScreenEffects,
@@ -337,21 +333,74 @@ THIS IS THE BUILD WIDGET FOR THE PLAY BOX
                     return Positioned.fill(
                       child: Image.asset(
                         effect.imagePath,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.fill,
                       ),
                     );
                   },
                 ),
+
+                ValueListenableBuilder<List<ScreenEffect>>(
+                  valueListenable:
+                      context.watch<GameEngine>().activeScreenEffects,
+                  builder: (context, effects, child) {
+                    final nonGameOverEffects = effects
+                        .where((e) => e.type != ScreenEffectType.gameOver)
+                        .toList();
+
+                    if (nonGameOverEffects.isEmpty) return SizedBox.shrink();
+
+                    return Stack(
+                      children: [
+                        for (final effect in nonGameOverEffects)
+                          Positioned.fill(
+                            child: Image.asset(
+                              effect.imagePath,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                      ],
+                    );
+                  },
+                ),
+
+                /// frame
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     image: DecorationImage(
+                        // invertColors: true,
                         fit: BoxFit.fill,
                         image: AssetImage(
                             "images/cyber_black_game_screen_frame_darker.png")),
                   ),
                 ),
+                // ValueListenableBuilder<bool>(
+                //   valueListenable: context.watch<GameEngine>().gameOverNotifier,
+                //   builder: (context, isGameOver, child) {
+                //     if (isGameOver)
+                //       return Positioned.fill(
+                //         child: Container(),
+                //       );
+                //     if (!isGameOver) return Positioned.fill(child: Container());
+                //   },
+                // ),
+                // ValueListenableBuilder<bool>(
+                //   valueListenable: context.watch<GameEngine>().gameOverNotifier,
+                //   builder: (context, isGameOver, child) {
+                //     return Stack(
+                //       children: [
+                //         Container(
+                //           decoration: BoxDecoration(
+                //               image: DecorationImage(
+                //                   image: AssetImage(
+                //                       'images/red_black_alien_planet.png'))),
+                //         ),
+                //       ],
+                //     );
+                //   },
+                // ),
 
+                /// obstacleBloodEffects
                 ValueListenableBuilder(
                   valueListenable:
                       context.watch<GameEngine>().activeObstacleEffects,
@@ -373,6 +422,8 @@ THIS IS THE BUILD WIDGET FOR THE PLAY BOX
                     );
                   },
                 ),
+
+                /// top and bottom towers of zombies
                 ValueListenableBuilder(
                   valueListenable: watchGameEngine.obstacles,
                   builder: (context, value, _) {
@@ -380,9 +431,10 @@ THIS IS THE BUILD WIDGET FOR THE PLAY BOX
                   },
                 ),
 
+                /// bullets
                 bulletStack(watchGameEngine),
 
-                // Bird
+                /// Bird
                 playerStack(),
 
                 ValueListenableBuilder(
@@ -392,7 +444,7 @@ THIS IS THE BUILD WIDGET FOR THE PLAY BOX
                   },
                 ),
 
-                // Game Over Text
+                /// GameOver
                 if (watchGameEngine.gameOver)
                   Center(
                     child: Text(
@@ -413,6 +465,9 @@ THIS IS THE BUILD WIDGET FOR THE PLAY BOX
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ComboHitsMessage(),
+
+              /// TODO - connect this. maybe use it more often! Change the images probably though.
+              /// or delete the dirty bastard
             ],
           ),
           Padding(
@@ -423,6 +478,9 @@ THIS IS THE BUILD WIDGET FOR THE PLAY BOX
                         ? Container()
                         : PrizeRevealAnimated()),
           ),
+          PlayBoxTopBottomNumbers(),
+
+          /// when tap chest, prize animates over the play box
         ],
       ),
     );

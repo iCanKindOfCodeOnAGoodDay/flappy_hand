@@ -32,24 +32,17 @@ class PremiumItems extends StatelessWidget {
           context.read<SettingsDataProvider>().changeRocket('$path');
         }
       },
-      child:
-          // Container(
-          //   height: 200.0,
-          //   width: 200.0,
-          //   decoration: BoxDecoration(
-          //       image: DecorationImage(
-          //           fit: BoxFit.contain, image: AssetImage('images/$path'))),
-          // ),
-          Column(
+      child: Column(
         children: [
           Container(
-            height: 400.0,
-            width: 400.0,
+            height: 300.0,
+            width: 300.0,
             decoration: BoxDecoration(
                 image: DecorationImage(
+                    opacity: 0.5,
+                    invertColors: true,
                     fit: BoxFit.contain,
-                    image:
-                        AssetImage('images/scifi_arcade_black_screen_2.png'))),
+                    image: AssetImage('images/scifi_screen_black.png'))),
 
             // Container(
             child: Padding(
@@ -64,25 +57,6 @@ class PremiumItems extends StatelessWidget {
               ),
             ),
           ),
-          // Container(
-          //   height: 200,
-          //   width: screenWidth,
-          //   child: ListView(
-          //     scrollDirection: Axis.horizontal,
-          //     children: List.generate(
-          //         context
-          //             .watch<SettingsDataProvider>()
-          //             .itemsWonThatAreAvailableToEquip
-          //             .length, (index) {
-          //       return PremiumItems(
-          //           type: type,
-          //           path: context
-          //               .read<SettingsDataProvider>()
-          //               .itemsWonThatAreAvailableToEquip[index]
-          //               .path);
-          //     }),
-          //   ),
-          // ),
         ],
       ),
     );

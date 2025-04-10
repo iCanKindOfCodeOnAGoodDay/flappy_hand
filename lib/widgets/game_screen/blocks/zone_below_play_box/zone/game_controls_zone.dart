@@ -30,39 +30,40 @@ class GameControlsWidgets extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      height: 120.0,
+                      height: 300.0,
                       width: 120.0,
                       decoration: BoxDecoration(
                           image: DecorationImage(
+                              invertColors: true,
                               fit: BoxFit.fill,
                               image:
                                   AssetImage('images/double_jump_icon.png'))),
                       child: GestureDetector(
                         onTap: () {
-                          context.read<GameEngine>().doubleJump('up');
+                          context.read<GameEngine>().doubleJump();
                         },
                       ),
                     ),
-                    RotatedBox(
-                      quarterTurns: 0,
-                      child: Container(
-                        height: 120.0,
-                        width: 120.0,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            image: DecorationImage(
-                                colorFilter: ColorFilter.mode(
-                                    Colors.red, BlendMode.color),
-                                fit: BoxFit.fill,
-                                image:
-                                    AssetImage('images/double_jump_icon.png'))),
-                        child: GestureDetector(
-                          onTap: () {
-                            context.read<GameEngine>().shootJump();
-                          },
-                        ),
-                      ),
-                    ),
+                    // RotatedBox(
+                    //   quarterTurns: 0,
+                    //   child: Container(
+                    //     height: 120.0,
+                    //     width: 120.0,
+                    //     decoration: BoxDecoration(
+                    //         borderRadius: BorderRadius.circular(30),
+                    //         image: DecorationImage(
+                    //             colorFilter: ColorFilter.mode(
+                    //                 Colors.red, BlendMode.color),
+                    //             fit: BoxFit.fill,
+                    //             image:
+                    //                 AssetImage('images/double_jump_icon.png'))),
+                    //     child: GestureDetector(
+                    //       onTap: () {
+                    //         context.read<GameEngine>().shootJump();
+                    //       },
+                    //     ),
+                    //   ),
+                    // ),
                     SizedBox(
                       height: 4,
                     ),
@@ -111,7 +112,7 @@ class GameControlsWidgets extends StatelessWidget {
                           image: DecorationImage(
                               fit: BoxFit.fitWidth,
                               image: AssetImage(
-                                  'images/${context.read<SettingsDataProvider>().pathToSelectedWalkingHand}'))),
+                                  'images/${context.read<SettingsDataProvider>().pathSelectedPlayer}'))),
                     ),
                     Container(
                       height: 50,
@@ -120,7 +121,7 @@ class GameControlsWidgets extends StatelessWidget {
                           image: DecorationImage(
                               fit: BoxFit.fitWidth,
                               image: AssetImage(
-                                  'images/${context.read<SettingsDataProvider>().pathToSelectedWalkingHand}'))),
+                                  'images/${context.read<SettingsDataProvider>().pathSelectedPlayer}'))),
                     ),
                   ],
                 ),
@@ -133,7 +134,7 @@ class GameControlsWidgets extends StatelessWidget {
                           image: DecorationImage(
                               fit: BoxFit.fitWidth,
                               image: AssetImage(
-                                  'images/${context.read<SettingsDataProvider>().pathToSelectedWalkingHand}'))),
+                                  'images/${context.read<SettingsDataProvider>().pathSelectedPlayer}'))),
                     ),
                     Container(
                       height: 50,
@@ -142,7 +143,7 @@ class GameControlsWidgets extends StatelessWidget {
                           image: DecorationImage(
                               fit: BoxFit.fitWidth,
                               image: AssetImage(
-                                  'images/${context.read<SettingsDataProvider>().pathToSelectedWalkingHand}'))),
+                                  'images/${context.read<SettingsDataProvider>().pathSelectedPlayer}'))),
                     ),
                   ],
                 ),
@@ -164,6 +165,7 @@ class GameControlsWidgets extends StatelessWidget {
                     // color: Colors.yellow,
                     decoration: BoxDecoration(
                       image: DecorationImage(
+                          invertColors: true,
                           fit: BoxFit.fill,
                           image: AssetImage(
                             // 'images/componetFullGreenButtonSquareBlackThumb.png',

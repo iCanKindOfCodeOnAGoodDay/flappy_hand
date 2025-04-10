@@ -10,42 +10,110 @@ class RegistrationScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.center,
+        // mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // SizedBox(
-          //   height: 100,
-          // ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          SizedBox(
+            height: 100,
+          ),
+          Stack(
             children: [
               Container(
-                // height: 150,
-                // width: 150,
-                height: MediaQuery.of(context).size.width / 3,
-                width: MediaQuery.of(context).size.width / 3,
+                height: 400,
+                width: MediaQuery.of(context).size.width,
+                // height: MediaQuery.of(context).size.width,
+                // width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         fit: BoxFit.contain,
-                        image: AssetImage('images/astronaut2.GIF'))),
+                        image: AssetImage('images/Cute_Alien_Knife.png'))),
               ),
-              Container(
-                // height: 150,
-                // width: 150,
-                height: MediaQuery.of(context).size.width / 5,
-                width: MediaQuery.of(context).size.width / 5,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        fit: BoxFit.fitHeight,
-                        image: AssetImage('images/zombie_1.GIF'))),
-              ),
+              // Column(
+              //   children: [
+              //     SizedBox(height: 90),
+              //     Padding(
+              //       padding: const EdgeInsets.only(left: 0.0),
+              //       child: Row(
+              //         mainAxisAlignment: MainAxisAlignment.center,
+              //         children: [
+              //           Container(
+              //             height: 70,
+              //             width: 70,
+              //             // height: MediaQuery.of(context).size.width,
+              //             // width: MediaQuery.of(context).size.width,
+              //             decoration: BoxDecoration(
+              //                 image: DecorationImage(
+              //                     fit: BoxFit.contain,
+              //                     image: AssetImage(
+              //                         'images/${context.watch<SettingsDataProvider>().pathSelectedPlayer}'))),
+              //           ),
+              //           // Container(
+              //           //   height: 50,
+              //           //   width: 90,
+              //           //   // height: MediaQuery.of(context).size.width / 5,
+              //           //   // width: MediaQuery.of(context).size.width / 5,
+              //           //   decoration: BoxDecoration(
+              //           //       image: DecorationImage(
+              //           //           fit: BoxFit.contain,
+              //           //           image: AssetImage(
+              //           //               'images/${context.watch<SettingsDataProvider>().gunPath}'))),
+              //           // ),
+              //         ],
+              //       ),
+              //     ),
+              //     SizedBox(
+              //       height: 30,
+              //     ),
+              //     Column(
+              //       children: [
+              //         Container(
+              //           height: 50,
+              //           width: 50,
+              //           // height: MediaQuery.of(context).size.width / 5,
+              //           // width: MediaQuery.of(context).size.width / 5,
+              //           decoration: BoxDecoration(
+              //               image: DecorationImage(
+              //                   fit: BoxFit.fitHeight,
+              //                   image: AssetImage(
+              //                       'images/alien_antennas_chatGPTog.png'))),
+              //         ),
+              //         Container(
+              //           height: 50,
+              //           width: 50,
+              //           // height: MediaQuery.of(context).size.width / 5,
+              //           // width: MediaQuery.of(context).size.width / 5,
+              //           decoration: BoxDecoration(
+              //               image: DecorationImage(
+              //                   fit: BoxFit.fitHeight,
+              //                   image: AssetImage(
+              //                       'images/alien_antennas_chatGPTog.png'))),
+              //         ),
+              //         Container(
+              //           height: 50,
+              //           width: 50,
+              //           // height: MediaQuery.of(context).size.width / 5,
+              //           // width: MediaQuery.of(context).size.width / 5,
+              //           decoration: BoxDecoration(
+              //               image: DecorationImage(
+              //                   fit: BoxFit.fitHeight,
+              //                   image: AssetImage(
+              //                       'images/alien_antennas_chatGPTog.png'))),
+              //         ),
+              //       ],
+              //     ),
+              //   ],
+              // ),
             ],
           ),
           SizedBox(
-            height: 20,
+            height: 30,
+          ),
+          SizedBox(
+            height: 40,
           ),
           Text(
-            'AK47 in SPACE',
-            style: TextStyle(color: Colors.greenAccent, fontSize: 30),
+            textAlign: TextAlign.center,
+            'Space Aliens',
+            style: TextStyle(color: Colors.black87, fontSize: 20),
           ),
           GestureDetector(
             onTap: () {
@@ -72,39 +140,6 @@ class RegistrationScreen extends StatelessWidget {
                           AssetImage('images/continueWithGoogleButton.png'))),
             ),
           ),
-          // Row(
-          //   children: [
-          //     Text(
-          //       'email',
-          //     ),
-          //   ],
-          // ),
-          // TextField(),
-          // Row(
-          //   children: [
-          //     Text(
-          //       'password',
-          //       // style: TextStyle(color: Colors.white),
-          //     ),
-          //   ],
-          // ),
-          // TextField(),
-          // GestureDetector(
-          //   onTap: () {
-          //     Navigator.push(context,
-          //         MaterialPageRoute(builder: (context) => SplashScreen()));
-          //   },
-          //   child: Container(
-          //     height: 100,
-          //     color: Colors.black,
-          //     child: Center(
-          //       child: Text(
-          //         'login',
-          //         style: TextStyle(color: Colors.white),
-          //       ),
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );

@@ -10,8 +10,10 @@ class AvailablePrize extends StatelessWidget {
       width: 300,
       decoration: BoxDecoration(
           image: DecorationImage(
+              invertColors: true,
+              opacity: 0.5,
               fit: BoxFit.fill,
-              image: AssetImage('images/scifi_arcade_black_screen_2.png'))),
+              image: AssetImage('images/scifi_screen_black.png'))),
       child: Padding(
         padding: const EdgeInsets.all(50.0),
         child: Container(

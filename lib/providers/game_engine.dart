@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flappy_taco/providers/game_data.dart';
 import 'package:flappy_taco/providers/settings_data.dart';
+import 'package:flappy_taco/services/audio_service.dart';
 import 'package:flutter/material.dart';
 
 import '../enums/screen_effect_type.dart';
@@ -12,8 +13,7 @@ import '../models/pickups.dart';
 import '../models/screen_effect.dart';
 import '../models/zombie_obstacle.dart';
 
-class GameEngine with ChangeNotifier {
-  /*
+/*
 
   ANIMATIONS (4 major components animated) - However, the player also has some effects that are stacked below, which should probably somehow be included with the bird.
   Maybe we can do this without creating addition columns like last time?
@@ -61,8 +61,8 @@ Screen Effects will come from the Game Data Provider, called during rebuilds tri
 
 
    */
-  // MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.height;
-  // MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width; // depreciated - will be removed in update
+class GameEngine with ChangeNotifier {
+  ValueNotifier<bool> gameOverNotifier = ValueNotifier<bool>(false);
   final ValueNotifier<List<ObstacleHitEffect>> activeObstacleEffects =
       ValueNotifier([]);
 
@@ -71,8 +71,8 @@ Screen Effects will come from the Game Data Provider, called during rebuilds tri
       obstacleIndex: obstacleIndex,
       xOffset: xOffset,
       y: y,
-      imagePath: 'images/deadHand.gif',
-      duration: Duration(milliseconds: 200),
+      imagePath: 'images/green_blood_alien_hit_effect.gif',
+      duration: Duration(milliseconds: 100),
     );
 
     activeObstacleEffects.value = [...activeObstacleEffects.value, effect];
@@ -83,13 +83,17 @@ Screen Effects will come from the Game Data Provider, called during rebuilds tri
     });
   }
 
+  bool hearSoundEffects = true;
+  SoundModel soundModel = SoundModel();
+
   void playEffect(ScreenEffectType type) {
     switch (type) {
-      case ScreenEffectType.explosion:
+      case ScreenEffectType.bomb:
+        // copy grenade for now
         triggerScreenEffect(
           type,
-          'images/deathStar150.gif',
-          Duration(milliseconds: 1200),
+          'images/blackRedYellowExplosion.gif',
+          Duration(milliseconds: 400),
         );
         break;
       case ScreenEffectType.grenade:
@@ -98,45 +102,66 @@ Screen Effects will come from the Game Data Provider, called during rebuilds tri
           'images/explosionFlames.gif',
           Duration(milliseconds: 600),
         );
+        soundModel.playOtherSounds5x('customExplosion.mp3', hearSoundEffects);
+
         break;
-      case ScreenEffectType.knife:
+      case ScreenEffectType.asteroid:
         triggerScreenEffect(
           type,
           'images/blood2.gif',
-          Duration(milliseconds: 400),
+
+          /// didn't i just turn this to black? THIS IS THE RED ONE LOL
+          Duration(milliseconds: 800),
         );
+        soundModel.knifePickup(hearSoundEffects);
         break;
-      case ScreenEffectType.monster:
+      case ScreenEffectType.mac10:
         triggerScreenEffect(
           type,
-          'images/21BlueZombieSuit.gif',
-          Duration(milliseconds: 1400),
+          'images/macGruberGunshots.gif',
+          Duration(milliseconds: 800),
         );
+        soundModel.bloodPickup(hearSoundEffects);
+        // this is the mac 10
         break;
       case ScreenEffectType.ammoUpgrade:
         triggerScreenEffect(
           type,
-          'images/blackRedYellowExplosion.gif',
+          'images/fireBallXPurple.gif',
           Duration(milliseconds: 100),
         );
+        soundModel.cannonPickup(hearSoundEffects);
         break;
       case ScreenEffectType.shotgun:
+
+        /// this one is the shotgun that plays macgruber
         triggerScreenEffect(
           type,
           'images/macGruberGunshots.gif',
-          Duration(milliseconds: 500),
+          Duration(milliseconds: 800),
         );
+        soundModel.crystalPickup(hearSoundEffects);
         break;
-      case ScreenEffectType.crystalBall:
+      case ScreenEffectType.acid:
         triggerScreenEffect(
           type,
-          'images/crystalBallLargeScreen.gif',
-          Duration(milliseconds: 500),
+          'images/blood2.gif',
+          Duration(milliseconds: 100),
         );
+        Future.delayed(Duration(milliseconds: 100), () {
+          triggerScreenEffect(
+            type,
+            'images/probe_patrol_abduction_tall.gif',
+            Duration(milliseconds: 1200),
+          );
+        });
+
         break;
       case ScreenEffectType.life:
         triggerScreenEffect(
-            type, 'images/zombieHandReach.gif', Duration(milliseconds: 500));
+            type, 'images/hand_grab_effect.gif', Duration(milliseconds: 800));
+        soundModel.lifePickup(hearSoundEffects);
+
         break;
     }
   }
@@ -144,7 +169,6 @@ Screen Effects will come from the Game Data Provider, called during rebuilds tri
   final ValueNotifier<List<Obstacle>> obstacles = ValueNotifier([]);
 
   ValueNotifier<List<ScreenEffect>> activeScreenEffects = ValueNotifier([]);
-
   void triggerScreenEffect(
       ScreenEffectType type, String imagePath, Duration duration) {
     final effect = ScreenEffect(
@@ -178,9 +202,9 @@ Screen Effects will come from the Game Data Provider, called during rebuilds tri
   double gravity = 0.6;
   double jumpStrength = -5;
 
-  final double obstacleWidth = 40;
+  final double obstacleWidth = 50;
   final double gapHeight = 150;
-  final double obstacleSpeed = 4; // was 2
+  final double obstacleSpeed = 3; // was 2 // gamespeed
 
   // List<double> obstacleX = [];
   // List<double> obstacleHeights = [];
@@ -201,7 +225,7 @@ Screen Effects will come from the Game Data Provider, called during rebuilds tri
     double lastX =
         obstacles.value.isEmpty ? zombieScreenWidth : obstacles.value.last.x;
 
-    double spacing = 100 + random.nextDouble() * 250;
+    double spacing = 150 + random.nextDouble() * 250;
 
     final newObstacle = Obstacle(
       x: lastX + spacing,
@@ -212,8 +236,10 @@ Screen Effects will come from the Game Data Provider, called during rebuilds tri
     obstacles.value = List.from(obstacles.value)..add(newObstacle);
   }
 
+  // i'm a little confused on this one - are we using it?
   void setGameOverFalse() {
     gameOver = false;
+    gameOverNotifier.value = false;
     notifyListeners();
   }
 
@@ -267,7 +293,6 @@ Screen Effects will come from the Game Data Provider, called during rebuilds tri
       // reached bottom
       else if (birdY + birdSize > zombieScreenHeight) {
         jump();
-        // endGame();
       }
 
       for (int index in obstaclesToRemove.reversed) {
@@ -287,35 +312,15 @@ Screen Effects will come from the Game Data Provider, called during rebuilds tri
     }
   }
 
-// TODO void checkIfBulletHitZombie() {}
-//   final ValueNotifier<int> currentStep = ValueNotifier(0);
-//
-//   void updateZombieCollisionCensor() {
-//     int dangerLevel = 0;
-//
-//     for (var obs in obstacles.value) {
-//       double xDistance = (obs.x - birdX).abs();
-//       double yDistanceTop = birdY; // distance from bird to top
-//       double yDistanceBottom = (birdY - (obs.height + gapHeight)).abs();
-//
-//       // Only check obstacles near the bird (X proximity)
-//       if (xDistance < 150) {
-//         // Compute a combined danger score, favoring closer X and Y
-//         double score =
-//             (150 - xDistance) + (30 - min(yDistanceTop, yDistanceBottom));
-//         int level = (score / 10).clamp(0, 20).toInt();
-//
-//         dangerLevel = max(dangerLevel, level);
-//       }
-//     }
-//
-//     if (currentStep.value != dangerLevel) {
-//       currentStep.value = dangerLevel;
-//     }
-//   }
-
   void endGame() {
+    soundModel.gameOver(hearSoundEffects);
+    triggerScreenEffect(
+        ScreenEffectType.gameOver, 'images/gameOver.GIF', Duration(seconds: 2));
+    triggerScreenEffect(ScreenEffectType.asteroid,
+        'images/blood2LightGreen.gif', Duration(milliseconds: 1500));
+
     gameOver = true;
+    gameOverNotifier.value = true;
     gameLoop?.cancel();
     oneSecondGlobalGamePlayTimer?.cancel();
     notifyListeners();
@@ -384,8 +389,8 @@ Screen Effects will come from the Game Data Provider, called during rebuilds tri
         }
       }
 
+      /// bird collision
       if (birdRect.overlaps(topRect) || birdRect.overlaps(bottomRect)) {
-        gameOver = true;
         endGame();
         return; // Stop further processing if game ends
       }
@@ -453,10 +458,10 @@ Screen Effects will come from the Game Data Provider, called during rebuilds tri
 
   void resetGame() {
     gameOver = false;
+    gameOverNotifier.value = false;
     birdY = 300;
     birdVelocity = 0;
     secondsSurvived = 0;
-
     obstacles.value.clear();
 
     for (int i = 0; i < 3; i++) {
@@ -475,11 +480,10 @@ Screen Effects will come from the Game Data Provider, called during rebuilds tri
     notifyListeners();
   }
 
-  void doubleJump(String direction) {
+  void doubleJump() {
     if (!gameOver) {
-      direction == 'up'
-          ? birdVelocity = jumpStrength * 2
-          : birdVelocity = -1 * jumpStrength;
+      birdY = birdY - 75;
+      jump();
     } else {
       // Restart game
       gameOver = false;
@@ -519,8 +523,11 @@ Screen Effects will come from the Game Data Provider, called during rebuilds tri
   }
 
   final ValueNotifier<List<Bullet>> bullets = ValueNotifier([]);
+  int laserCounter = 0;
 
   void addNewBulletForAnimation() {
+    // soundModel.playOtherSounds("laserBlast.mp3", hearSoundEffects);
+
     /// this is to be called each time the gun should be fired, the bullet should automatically animated if Game loop is calling animatedBulletsAcrossScreen()
     bullets.value = List.from(bullets.value)..add(Bullet(x: birdX, y: birdY));
     notifyListeners();
@@ -558,13 +565,14 @@ Screen Effects will come from the Game Data Provider, called during rebuilds tri
         Future.delayed(Duration(milliseconds: 200), () {
           alreadyPickedUp = false;
         }); // prevent from picking up many duplicates at a time
-        // Optional: Add collision detection with bird here
-        final pickupRect = Rect.fromLTWH(pickup.x, pickup.y, 30, 30);
+
+        ///Collision Detection - Pickups
+        final pickupRect = Rect.fromLTWH(pickup.x, pickup.y, 50, 50);
         final birdRect = Rect.fromLTWH(birdX, birdY, birdSize, birdSize);
         if (pickupRect.overlaps(birdRect)) {
           handlePickup(pickup); // Your custom logic
-          // triggerScreenEffect(ScreenEffectType.explosion,
-          //     "images/explosionFlames.gif", Duration(seconds: 1));
+          // triggerScreenEffect(ScreenEffectType.bomb,
+          //     "images/bombFlames.gif", Duration(seconds: 1));
           // print("should trigger screen effect");
         }
       }
@@ -575,23 +583,23 @@ Screen Effects will come from the Game Data Provider, called during rebuilds tri
     print("GOT PICKUP TYPE: '${pickup.type}'");
 
     switch (pickup.type) {
-      case 'crystalBall':
-        playEffect(ScreenEffectType.crystalBall);
+      case 'acid':
+        playEffect(ScreenEffectType.acid);
         break;
-      case 'knife':
-        playEffect(ScreenEffectType.knife);
+      case 'asteroid':
+        playEffect(ScreenEffectType.asteroid);
         break;
 
       case 'grenade':
         playEffect(ScreenEffectType.grenade);
         break;
 
-      case 'explosion':
-        playEffect(ScreenEffectType.explosion);
+      case 'bomb':
+        playEffect(ScreenEffectType.bomb);
         break;
 
-      case 'monster':
-        playEffect(ScreenEffectType.monster);
+      case 'mac10':
+        playEffect(ScreenEffectType.mac10);
         break;
 
       case 'life':
@@ -608,8 +616,8 @@ Screen Effects will come from the Game Data Provider, called during rebuilds tri
         break;
 
       default:
-        print("💥 Unknown pickup: '${pickup.type}' — using explosion fallback");
-        playEffect(ScreenEffectType.explosion);
+        print("💥 Unknown pickup: '${pickup.type}' — using bomb fallback");
+        playEffect(ScreenEffectType.bomb);
     }
   }
 
@@ -621,30 +629,32 @@ Screen Effects will come from the Game Data Provider, called during rebuilds tri
     String type = pickups[pickupNumber];
     String path;
 
+    if (type == 'gameOver')
+      return null; // stop creating pickups for gameOver that have default values for iconpath and effect
     switch (type) {
-      case 'knife':
+      case 'asteroid':
         path = settings.pathToSelectedKnife;
         break;
       case 'grenade':
         path = settings.grenadePath;
         break;
-      case 'explosion':
-        path = 'pickup_death_star.GIF';
-        break;
-      case 'monster':
-        path = settings.monsterPath;
-        break;
-      case 'life':
-        path = settings.pathToSelectedWalkingHand;
-        break;
-      case 'ammoUpgrade':
-        path = 'fireball6.png';
+      case 'bomb':
+        path = 'bomb_pickup_2.png';
         break;
       case 'shotgun':
-        path = 'blood.png';
+        path = settings.shotgunPath;
         break;
-      case 'crystalBall':
-        path = 'crystalBallXXXXX.gif';
+      case 'life':
+        path = settings.pathSelectedPlayer;
+        break;
+      case 'ammoUpgrade':
+        path = 'fireBallXPurple.gif';
+        break;
+      case 'mac10':
+        path = 'mac_10_flipped.png';
+        break;
+      case 'acid':
+        path = 'probe_patrol_UFO_lights.png';
         break;
       default:
         path = settings.pathToSelectedKnife;

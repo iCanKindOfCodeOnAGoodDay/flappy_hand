@@ -53,10 +53,10 @@ class SettingsDataProvider with ChangeNotifier {
       'space_zombie_lower_position_background_square.png'; // for what?
   bool activatedFloppyFace = false;
   int indexToIterateThroughFloppyFaceList = 0;
-  String pathToSelectedWalkingHand = 'astronaut2.GIF';
+  String pathSelectedPlayer = 'orange_astronaut_original.gif';
   // 'eyeBallFlying2.gif;
   // first import was not loading so changed to new file -- we can use this image for 'bird' but not for extra lives bottom view_box?
-  String pathToSelectedDeadHand = 'astronaut2.GIF';
+  String pathToSelectedDeadHand = 'orange_astronaut_original.gif';
   HandColors selectedHandColor = HandColors.regular;
   int _indexOfHandColorList = 0;
   String pathToSelectedBarrier =
@@ -84,8 +84,8 @@ class SettingsDataProvider with ChangeNotifier {
   String grenadePath = 'standardGrenade1-18-23BrightGreenStandard.png';
   String pathToNewItemFromChest = 'xThingKeltechPistol.png';
   int rubies = 1985;
-  String pathToSelectedKnife = 'switchBladeBloody.gif';
-  String monsterPath = 'friendlyMonster3.gif';
+  String pathToSelectedKnife = 'asteroid_flaming.png';
+  String shotgunPath = 'shotgun_icon.png';
   String pathToSelectedRocket =
       'img-handWings2-16-23.png'; // what was the rocket? Dont remember which power up position
   String pathToSelectedGameConsole =
@@ -100,7 +100,7 @@ class SettingsDataProvider with ChangeNotifier {
 
   /// this is the variable if last prize should be hidden, default
 
-  List<PremiumItems> itemsWonThatAreAvailableToEquip = [
+  List<PremiumItems> userInventoryItems = [
     PremiumItems(
         type: PremiumContentType.gat, path: 'skeletonDracoPinkChrome.png'),
     PremiumItems(
@@ -134,7 +134,7 @@ class SettingsDataProvider with ChangeNotifier {
     } else {
       indexToIterateThroughFloppyFishList = 0;
     }
-    pathToSelectedWalkingHand = moreFish[indexToIterateThroughFloppyFishList];
+    pathSelectedPlayer = moreFish[indexToIterateThroughFloppyFishList];
     notifyListeners();
   }
 
@@ -144,7 +144,7 @@ class SettingsDataProvider with ChangeNotifier {
     } else {
       indexToIterateThroughFloppyFaceList = 0;
     }
-    pathToSelectedWalkingHand = faces[indexToIterateThroughFloppyFaceList];
+    pathSelectedPlayer = faces[indexToIterateThroughFloppyFaceList];
     notifyListeners();
   }
 
@@ -160,7 +160,7 @@ class SettingsDataProvider with ChangeNotifier {
   /// looks like this func might be getting called during gameplay perhaps on a level up or a double points
   void updatePathToHandColor(HandColors color) {
     if (color == HandColors.regular) {
-      pathToSelectedWalkingHand = 'trumpHeadxx1-22-23.gif';
+      pathSelectedPlayer = 'trumpHeadxx1-22-23.gif';
       pathToSelectedDeadHand = 'thingRightTraced.png';
       notifyListeners();
     }
@@ -312,13 +312,13 @@ class SettingsDataProvider with ChangeNotifier {
   }
 
   void changeBeast(String beastPath) {
-    monsterPath = beastPath;
+    shotgunPath = beastPath;
     pathToChangeChestImageFromClosedToOpen = 'pinkChestClosed.gif';
     notifyListeners();
   }
 
   void changeRocket(String rocketPath) {
-    monsterPath = rocketPath;
+    shotgunPath = rocketPath;
     pathToChangeChestImageFromClosedToOpen = 'pinkChestClosed.gif';
     notifyListeners();
   }
@@ -370,13 +370,13 @@ class SettingsDataProvider with ChangeNotifier {
   void addAllSkeletonGatsAsAvailableForTesting() {
     addedAllSkeletonGuns = !addedAllSkeletonGuns;
     if (addedAllSkeletonGuns == false) {
-      itemsWonThatAreAvailableToEquip = [];
+      userInventoryItems = [];
       for (var i = 0; i < guns.length - 1; i++) {
-        itemsWonThatAreAvailableToEquip
+        userInventoryItems
             .add(PremiumItems(type: PremiumContentType.gat, path: guns[i]));
       }
     } else {
-      itemsWonThatAreAvailableToEquip = [];
+      userInventoryItems = [];
     }
 
     notifyListeners();
@@ -399,9 +399,7 @@ class SettingsDataProvider with ChangeNotifier {
   }
 
   void setLastPrizeTypeForCongratsMessage() {
-    var type = itemsWonThatAreAvailableToEquip[
-            itemsWonThatAreAvailableToEquip.length - 1]
-        .type;
+    var type = userInventoryItems[userInventoryItems.length - 1].type;
     if (type == PremiumContentType.gat) {
       lastWonPrizeTypeForTheCongratsMessage = 'gun';
     } else if (type == PremiumContentType.shank) {
@@ -418,12 +416,10 @@ class SettingsDataProvider with ChangeNotifier {
 
   void equipLastWonPrize() {
     // height = 0;
-    var lastWonPrizeType = itemsWonThatAreAvailableToEquip[
-            itemsWonThatAreAvailableToEquip.length - 1]
-        .type;
-    var lastWonItemPath = itemsWonThatAreAvailableToEquip[
-            itemsWonThatAreAvailableToEquip.length - 1]
-        .path;
+    var lastWonPrizeType =
+        userInventoryItems[userInventoryItems.length - 1].type;
+    var lastWonItemPath =
+        userInventoryItems[userInventoryItems.length - 1].path;
     if (lastWonPrizeType == PremiumContentType.gat) {
       changeGun(lastWonItemPath);
     } else if (lastWonPrizeType == PremiumContentType.grenade) {
@@ -488,26 +484,26 @@ class SettingsDataProvider with ChangeNotifier {
     r = Random().nextInt(3);
     if (r == 1) {
       i = Random().nextInt(guns.length - 1);
-      itemsWonThatAreAvailableToEquip
+      userInventoryItems
           .add(PremiumItems(path: guns[i], type: PremiumContentType.gat));
       pathToNewItemFromChest = guns[i];
     } else if (r == 2) {
       /// player won a grenade
       i = Random().nextInt(grenades.length - 1);
-      itemsWonThatAreAvailableToEquip.add(
+      userInventoryItems.add(
           PremiumItems(path: grenades[i], type: PremiumContentType.grenade));
       pathToNewItemFromChest = grenades[i];
     } else if (r == 3) {
       /// player won a beast
       i = Random().nextInt(beasts.length - 1);
-      itemsWonThatAreAvailableToEquip
+      userInventoryItems
           .add(PremiumItems(path: beasts[i], type: PremiumContentType.beast));
       pathToNewItemFromChest = beasts[i];
     } else if (r == 0) {
       i = Random().nextInt(knives.length - 1);
 
       /// player won a knife
-      itemsWonThatAreAvailableToEquip
+      userInventoryItems
           .add(PremiumItems(path: knives[i], type: PremiumContentType.shank));
       pathToNewItemFromChest = knives[i];
     }

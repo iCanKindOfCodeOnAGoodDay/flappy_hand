@@ -87,7 +87,7 @@ Managing the player using the same method will be a very easy integration once t
   double screenHeight = 300;
   LastGamePlayButton lastCommand = LastGamePlayButton.climb;
   AmmoType currentAmmunition = AmmoType.orange;
-  bool hearSoundEffects = false;
+  bool hearSoundEffects = true;
   bool hearBackgroundMusic = false;
   double opacityOfBlackGameBoy = 1.0;
   bool redGameBoyInsteadOfYellow = false;

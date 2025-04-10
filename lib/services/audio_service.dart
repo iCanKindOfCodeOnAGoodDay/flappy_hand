@@ -26,12 +26,18 @@ class SoundModel {
   final loopFireworksSoundsPlayer = AudioPlayer();
 
   void gameOver(bool hearSoundEffects) async {
+    print('SFX playing!');
+
     if (hearSoundEffects == true) {
+      print('SFX playingggggg!');
+
       final audioPlayer = AudioPlayer();
-      await audioPlayer.setVolume(3.0);
+      await audioPlayer.setVolume(1.0);
 
       await audioPlayer.setAsset('assets/game_over_short.mp3');
       await audioPlayer.play();
+      print('SFX playing!');
+
       await audioPlayer.stop();
 
       await audioPlayer.dispose();

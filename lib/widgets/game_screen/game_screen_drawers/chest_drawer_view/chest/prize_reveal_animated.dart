@@ -34,9 +34,10 @@ class _PrizeRevealAnimatedState extends State<PrizeRevealAnimated> {
 
     return Container(
       decoration: BoxDecoration(
-          image: DecorationImage(
-              fit: BoxFit.contain,
-              image: AssetImage('images/scifi_arcade_black_screen.png'))),
+          // image: DecorationImage(
+          //     fit: BoxFit.contain,
+          //     image: AssetImage('images/scifi_arcade_black_screen.png')),
+          ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -122,24 +123,12 @@ class PrizeRevealResultRowIcons extends StatelessWidget {
           //         image: AssetImage('images/scifi_arcade_black_screen_2.png'))),
           child: showResultRow == true
               ? Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 0.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        "BLOODY BOTTLE",
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.w700),
-                      ),
-                      Text(
-                        "Do you want to select this prize?",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      // SizedBox(
-                      //   height: 20,
-                      // ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           GestureDetector(
                             onTap: () {
@@ -160,24 +149,13 @@ class PrizeRevealResultRowIcons extends StatelessWidget {
                                   .closeChestAndHideLastPrize();
                             },
                             child: Container(
-                              width: 100.0,
-                              height: 100.0,
+                              width: 130.0,
+                              height: 130.0,
                               decoration: BoxDecoration(
                                   image: DecorationImage(
                                       image: AssetImage(
-                                          'images/UI_equip_black.png'))),
+                                          'images/icon_button_equip.png'))),
                             ),
-
-                            // Icon(
-                            //   Icons.check_circle_outline,
-                            //   color: Colors.white,
-                            //   size: 60,
-                            // ),
-                          ),
-                          Icon(
-                            Icons.cancel_outlined,
-                            color: Colors.transparent,
-                            size: 60,
                           ),
                         ],
                       ),

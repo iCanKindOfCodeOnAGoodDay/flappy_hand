@@ -55,7 +55,7 @@ class SettingOption extends StatelessWidget {
                     ? Container(
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20.0),
-                            color: Colors.greenAccent),
+                            color: Colors.white),
                         child: Padding(
                           padding: const EdgeInsets.all(20.0),
                           child: Text(
@@ -71,15 +71,15 @@ class SettingOption extends StatelessWidget {
                     : Container(
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20.0),
-                            border: Border.all(
-                                color: Colors.greenAccent, width: 3.0)),
+                            border:
+                                Border.all(color: Colors.white, width: 3.0)),
                         child: Padding(
                           padding: const EdgeInsets.all(20.0),
                           child: Text(
                             'on',
                             style: TextStyle(
                               fontSize: 10.0,
-                              color: Colors.greenAccent,
+                              color: Colors.white,
                               fontWeight: FontWeight.w700,
                             ),
                           ),

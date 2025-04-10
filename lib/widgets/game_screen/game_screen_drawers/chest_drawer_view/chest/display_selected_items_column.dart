@@ -54,7 +54,7 @@ class DisplaySelectedItemsColumn extends StatelessWidget {
                     height: 10.0,
                   ),
                   ArmoryItemWidgets(
-                      path: context.read<SettingsDataProvider>().monsterPath),
+                      path: context.read<SettingsDataProvider>().shotgunPath),
                 ],
               ),
               SizedBox(
@@ -84,49 +84,49 @@ class DisplaySelectedItemsColumn extends StatelessWidget {
 }
 
 class SelectionLabelTitles extends StatelessWidget {
-  String title;
-  SelectionLabelTitles({required this.title});
+  final String title;
+  final Widget child;
+
+  SelectionLabelTitles({
+    required this.title,
+    Widget? child,
+  }) : this.child = child ?? Container();
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(0.0),
-        child: Container(
-          // height: 500,
-          // width: 100,
-          decoration: BoxDecoration(
-              // color: Colors.black,
-              // border: Border(top: BorderSide(color: Colors.white, width: 3.0)),
-
-              // image: DecorationImage(
-              //     fit: BoxFit.cover,
-              //     image: AssetImage('images/ledScreenBackground.jpg')),
-              // borderRadius: BorderRadius.circular(10.0),
-              ),
-          child: Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: AssetImage(
-                        'images/cyber_black_game_screen_black_mono.png'))),
-            // color: Colors.black54,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
-              child: Center(
-                child: Container(
-                  // color: Colors.black54,
-                  child: Text(
-                    title.toUpperCase(),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.0,
-                    ),
+      padding: const EdgeInsets.all(0.0),
+      child: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            opacity: 0.5,
+            fit: BoxFit.fill,
+            image: AssetImage('images/cyber_black_game_screen_black_mono.png'),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 80.0,
+            horizontal: 40,
+          ),
+          child: Center(
+            child: Column(
+              children: [
+                Text(
+                  title.toUpperCase(),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 40.0,
+                    fontWeight: FontWeight.w800,
                   ),
                 ),
-              ),
+                child,
+              ],
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

@@ -15,7 +15,7 @@ class ThingWalkingDynamicWidget extends StatelessWidget {
                 image: DecorationImage(
                     fit: BoxFit.cover,
                     image: AssetImage(
-                        'images/${context.watch<SettingsDataProvider>().pathToSelectedWalkingHand}'))),
+                        'images/${context.watch<SettingsDataProvider>().pathSelectedPlayer}'))),
           );
   }
 }

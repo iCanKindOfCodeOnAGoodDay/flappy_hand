@@ -12,7 +12,7 @@ class SelectedMonsterWidget extends StatelessWidget {
           image: DecorationImage(
               fit: BoxFit.contain,
               image: AssetImage(
-                  'images/${context.watch<SettingsDataProvider>().monsterPath}'))),
+                  'images/${context.watch<SettingsDataProvider>().shotgunPath}'))),
     );
   }
 }

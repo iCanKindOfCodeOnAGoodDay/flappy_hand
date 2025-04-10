@@ -9,7 +9,9 @@ import 'package:provider/provider.dart';
 void main() {
   ///lock landscape mmode
   WidgetsFlutterBinding.ensureInitialized();
+
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => GamePlayVariableDataProvider()),
     ChangeNotifierProvider(create: (_) => SettingsDataProvider()),

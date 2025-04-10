@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// TODO APRIL 10 -  I dont think that this is in use any more.
 class ArmoryItemWidgets extends StatelessWidget {
   String path;
   ArmoryItemWidgets({required this.path});

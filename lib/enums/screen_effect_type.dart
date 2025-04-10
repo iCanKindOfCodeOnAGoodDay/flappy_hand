@@ -1,11 +1,13 @@
 enum ScreenEffectType {
-  explosion,
+  bomb,
   grenade,
-  knife,
-  monster,
+  asteroid,
+  mac10,
   ammoUpgrade,
   shotgun,
-  crystalBall,
+  acid,
   life,
   // add more as needed
+  // bottom effect
+  gameOver,
 }
